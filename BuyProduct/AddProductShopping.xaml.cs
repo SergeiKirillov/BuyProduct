@@ -23,5 +23,10 @@ namespace BuyProduct
         {
             InitializeComponent();
         }
+
+        private void BtnSaveDB_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
