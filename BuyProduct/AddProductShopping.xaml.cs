@@ -20,11 +20,13 @@ namespace BuyProduct
     /// </summary>
     public partial class AddProductShopping : Window
     {
+        private DateTime dtShop;
+
         public AddProductShopping()
         {
             InitializeComponent();
 
-            dtShoping.Text = DateTime.Now.ToString();
+            dtShop = DateTime.Now;
 
             LoadComboBox();
 
@@ -32,6 +34,9 @@ namespace BuyProduct
 
         private void LoadComboBox()
         {
+            
+            dtShoping.Text = dtShop.ToString();
+
             using (var connection = new SQLiteConnection("Data Source = product.db"))
             {
                 connection.Open();
@@ -101,7 +106,7 @@ namespace BuyProduct
 
 
                 #region Магазин
-                sqlExpression = "select name,City from ShopName order by name asc";
+                sqlExpression = "select name,City,Addres from ShopName order by name asc";
                 command = new SQLiteCommand(sqlExpression, connection);
 
                 using (SQLiteDataReader reader = command.ExecuteReader())
@@ -110,7 +115,7 @@ namespace BuyProduct
                     {
                         while (reader.Read())
                         {
-                            cmbShopName.Items.Add(reader.GetString(1)+","+ reader.GetString(0));
+                            cmbShopName.Items.Add(reader.GetString(0)+","+ reader.GetString(1)+","+reader.GetString(2));
                         }
 
 
@@ -138,9 +143,179 @@ namespace BuyProduct
 
         private void BtnSaveDB_Click(object sender, RoutedEventArgs e)
         {
-            
+            dtShop = (DateTime)dtShoping.SelectedDate;
+
+            LoadComboBox();
         }
 
-        
+        private void cmbCategoriaProduct_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (!cmbCategoriaProduct.IsKeyboardFocusWithin && String.IsNullOrEmpty(cmbCategoriaProduct.Text))
+            {
+                MessageBox.Show("Выберите значение");
+            }
+        }
+
+        private void cmbCategoriaProduct_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Enter)||(e.Key == Key.Tab))
+            {
+                string txtCatProduct = cmbCategoriaProduct.Text;
+
+                //System.Diagnostics.Debug.WriteLine(txtCatProduct);
+
+                if (!cmbCategoriaProduct.Items.Contains(txtCatProduct))
+                {
+                    cmbCategoriaProduct.Items.Add(txtCatProduct);
+                   System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Продуктов________________");
+
+
+                    #region Записываем данные в БД
+                    using (var connection = new SQLiteConnection("Data Source = product.db"))
+                    {
+                        connection.Open();
+                        string sqlExpression;
+                        SQLiteCommand command;
+
+                        sqlExpression = "INSERT INTO  ProdCategoriaName(name) VALUES ('"+txtCatProduct+"')";
+                        command = new SQLiteCommand(sqlExpression, connection);
+
+                        int result = command.ExecuteNonQuery();
+                        
+                        connection.Close();
+
+                    }
+
+                    #endregion
+
+                }
+
+
+            }
+        }
+
+        private void cmbCatShop_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
+            {
+                string txtCatShop = cmbCatShop.Text;
+
+                //System.Diagnostics.Debug.WriteLine(txtCatProduct);
+
+                if (!cmbCatShop.Items.Contains(txtCatShop))
+                {
+                    cmbCatShop.Items.Add(txtCatShop);
+                    System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Расходов________________");
+
+
+                    #region Записываем данные в БД
+                    using (var connection = new SQLiteConnection("Data Source = product.db"))
+                    {
+                        connection.Open();
+                        string sqlExpression;
+                        SQLiteCommand command;
+
+                        sqlExpression = "INSERT INTO  CatShop(CategoriaShopping) VALUES ('"+ txtCatShop + "')";
+                        command = new SQLiteCommand(sqlExpression, connection);
+
+                        int result = command.ExecuteNonQuery();
+
+                        connection.Close();
+
+                    }
+
+                    #endregion
+
+                }
+
+
+            }
+        }
+
+        private void cmbProdUnit_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
+            {
+                string txtProdUnit = cmbProdUnit.Text;
+
+                //System.Diagnostics.Debug.WriteLine(txtCatProduct);
+
+                if (!cmbProdUnit.Items.Contains(txtProdUnit))
+                {
+                    cmbProdUnit.Items.Add(txtProdUnit);
+                    System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Размерности________________");
+
+
+                    #region Записываем данные в БД
+                    using (var connection = new SQLiteConnection("Data Source = product.db"))
+                    {
+                        connection.Open();
+                        string sqlExpression;
+                        SQLiteCommand command;
+
+                        sqlExpression = "INSERT INTO  ProdUnit(Unit) VALUES ('" + txtProdUnit + "')";
+                        command = new SQLiteCommand(sqlExpression, connection);
+
+                        int result = command.ExecuteNonQuery();
+
+                        connection.Close();
+
+                    }
+
+                    #endregion
+
+                }
+
+
+            }
+        }
+
+        private void cmbShopName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
+            {
+                string txtShopName = cmbShopName.Text;
+                string NameShop;
+                string CityShop;
+                String AddresShop;
+
+                //System.Diagnostics.Debug.WriteLine(txtCatProduct);
+
+                if (!cmbShopName.Items.Contains(txtShopName))
+                {
+                    cmbShopName.Items.Add(txtShopName);
+                    System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Размерности________________");
+
+                    #region разщепляем строчку на Name, City, Addres
+                    string[] shop = txtShopName.Split(new char[] { ',' });
+                    NameShop = shop[0];
+                    CityShop = shop[1];
+                    AddresShop = shop[2];
+                    #endregion
+
+
+                    #region Записываем данные в БД
+                    using (var connection = new SQLiteConnection("Data Source = product.db"))
+                    {
+                        connection.Open();
+                        string sqlExpression;
+                        SQLiteCommand command;
+
+                        sqlExpression = "INSERT INTO  ShopName(Name,City,Addres) VALUES ('" + NameShop+"','"+ CityShop+"','"+ AddresShop+ "')";
+                        command = new SQLiteCommand(sqlExpression, connection);
+
+                        int result = command.ExecuteNonQuery();
+
+                        connection.Close();
+
+                    }
+
+                    #endregion
+
+                }
+
+
+            }
+        }
     }
 }
