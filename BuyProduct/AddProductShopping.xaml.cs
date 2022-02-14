@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SQLite;
+using System.Runtime.InteropServices;
 
 namespace BuyProduct
 {
@@ -20,6 +21,35 @@ namespace BuyProduct
     /// </summary>
     public partial class AddProductShopping : Window
     {
+        #region Автоматическое переключение раскладки
+        //*****************************************************
+        //Функции винапи
+        //*****************************************************
+        const int KL_NAMELENGTH = 9;
+        const int KLF_ACTIVATE = 1;
+
+        [DllImport("user32.dll")]
+        public static extern long LoadKeyboardLayout(string pwszKLID, uint Flags);
+        [DllImport("user32.dll")]
+        public static extern long GetKeyboardLayoutName(System.Text.StringBuilder pwszKLID);
+
+        public static string getKLName()
+        {
+            System.Text.StringBuilder name = new System.Text.StringBuilder(KL_NAMELENGTH);
+            GetKeyboardLayoutName(name);
+            return name.ToString();
+        }
+
+        private static void setKLName(string pwszKLID)
+        {
+            LoadKeyboardLayout(pwszKLID, KLF_ACTIVATE);
+        }
+
+        #endregion
+
+
+
+
         private DateTime dtShop;
 
         public AddProductShopping()
@@ -316,6 +346,53 @@ namespace BuyProduct
 
 
             }
+        }
+
+        private void txtProductName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            setKLName("00000419");
+            txtProductName.SelectionStart = 0;
+            txtProductName.SelectionLength = txtProductName.Text.Length;
+            
+        }
+
+        private void txtProductPrice_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtProductPrice.SelectionStart = 0;
+            txtProductPrice.SelectionLength = txtProductPrice.Text.Length;
+                    
+        }
+        
+
+       
+
+        private void txtProductMassa_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtProductMassa.SelectionStart = 0;
+            txtProductMassa.SelectionLength = txtProductMassa.Text.Length;
+        }
+
+        private void txtProductSkidka_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtProductSkidka.SelectionStart = 0;
+            txtProductSkidka.SelectionLength = txtProductSkidka.Text.Length;
+        }
+
+        private void txtProductPrice_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !AreaAllValidNumericChar(e.Text);
+            base.OnPreviewTextInput(e);
+        }
+
+        private bool AreaAllValidNumericChar(string str)
+        {
+            foreach (char c in str)
+            {
+                if ((!Char.IsNumber(c))) return false;
+               
+            }
+
+            return true;
         }
     }
 }
