@@ -48,13 +48,16 @@ namespace BuyProduct
         #endregion
 
 
-
+        PriceShop pokupka;
 
         private DateTime dtShop;
 
         public AddProductShopping()
         {
             InitializeComponent();
+
+            pokupka = new PriceShop();
+            this.DataContext = pokupka;
 
             dtShop = DateTime.Now;
 
@@ -356,43 +359,43 @@ namespace BuyProduct
             
         }
 
-        private void txtProductPrice_GotFocus(object sender, RoutedEventArgs e)
-        {
-            txtProductPrice.SelectionStart = 0;
-            txtProductPrice.SelectionLength = txtProductPrice.Text.Length;
-                    
-        }
+        #region TextBox -цена продукта за еденицу
         
-
        
-
-        private void txtProductMassa_GotFocus(object sender, RoutedEventArgs e)
+        private void txt_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            txtProductMassa.SelectionStart = 0;
-            txtProductMassa.SelectionLength = txtProductMassa.Text.Length;
-        }
+            KeyConverter converter = new KeyConverter();
 
-        private void txtProductSkidka_GotFocus(object sender, RoutedEventArgs e)
-        {
-            txtProductSkidka.SelectionStart = 0;
-            txtProductSkidka.SelectionLength = txtProductSkidka.Text.Length;
-        }
+            string key = converter.ConvertToString(e.Key);
 
-        private void txtProductPrice_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            e.Handled = !AreaAllValidNumericChar(e.Text);
-            base.OnPreviewTextInput(e);
-        }
-
-        private bool AreaAllValidNumericChar(string str)
-        {
-            foreach (char c in str)
+            if (key != null && key.Length == 1)
             {
-                if ((!Char.IsNumber(c))) return false;
-               
+                e.Handled = Char.IsDigit(key[0]) == false;
             }
+        }
 
-            return true;
+        private void txtProductPrice_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Enter)) txtProductMassa.Focus();
+        }
+        #endregion
+
+        private void txt_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            tb.SelectionStart = 0;
+            tb.SelectionLength = tb.Text.Length;
+
+        }
+
+        private void txtProductMassa_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Enter)) cmbProdUnit.Focus();
+        }
+
+        private void txtProductSkidka_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Enter)) cmbShopName.Focus();
         }
     }
 }
