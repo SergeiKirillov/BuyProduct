@@ -21,6 +21,8 @@ namespace BuyProduct
     /// </summary>
     public partial class AddProductShopping : Window
     {
+        PriceShop AddShoping = new PriceShop();
+
         #region Автоматическое переключение раскладки
         //*****************************************************
         //Функции винапи
@@ -395,7 +397,21 @@ namespace BuyProduct
 
         private void txtProductSkidka_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key.Equals(Key.Enter)) cmbShopName.Focus();
+            
+            
+
+            if (e.Key.Equals(Key.Enter))
+            {
+                AddShoping.productPrice = float.Parse(txtProductPrice.Text);
+                AddShoping.productMassa = float.Parse(txtProductMassa.Text);
+                AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text);
+               //float tt = (AddShoping.productPrice * AddShoping.productMassa) - AddShoping.ProductDiscont;
+               
+
+
+                txtProductItogo.Text = String.Format("{0:0.##}",AddShoping.productRashod);
+                cmbShopName.Focus();
+            }
         }
     }
 }

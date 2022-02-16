@@ -51,9 +51,9 @@ namespace BuyProduct
             set { tovarPrice1Poz = value; }
         }
 
-        public string Error => throw new NotImplementedException();
 
-        private float productMassa
+
+        public float productMassa
         {
             get 
             { 
@@ -62,31 +62,31 @@ namespace BuyProduct
             set { tovarMassa = value; }
         }
 
-        private string productUnit
+        public string productUnit
         {
             get { return tovarUnit; }
             set { tovarUnit = value; }
         }
 
-        private float ProductDiscont
+        public float ProductDiscont
         {
             get { return tovarDiscont; }
             set { tovarDiscont = value; }
         }
 
-        private float productRashod
+        public float productRashod
         {
-            get { return tovarPrice;}
-            set { tovarPrice = (tovarPrice1Poz * tovarMassa) - tovarDiscont; }
+            get { return tovarPrice= (tovarPrice1Poz * tovarMassa) - tovarDiscont; }
+            
         }
 
-        private string CategoriaShopping
+        public string CategoriaShopping
         {
             get { return CategoriaShop; }
             set { CategoriaShop = value; }
         }
 
-        private string ShopName
+        public string ShopName
         {
             get { return ShopNames; }
             set { ShopNames = value; }
