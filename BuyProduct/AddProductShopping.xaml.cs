@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SQLite;
 using System.Runtime.InteropServices;
+using System.Globalization;
 
 namespace BuyProduct
 {
@@ -365,19 +366,28 @@ namespace BuyProduct
             
         }
 
-        #region TextBox -цена продукта за еденицу
+
         
-       
         private void txt_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            #region Вариант 1
             KeyConverter converter = new KeyConverter();
 
             string key = converter.ConvertToString(e.Key);
 
-            if (key != null && key.Length == 1)
+            if ((key != null && key.Length == 1))
             {
+                // e.Handled = Char.IsDigit(key[0]) == false;
                 e.Handled = Char.IsDigit(key[0]) == false;
             }
+            #endregion
+
+            #region Вариант 2
+
+
+
+            #endregion
+
         }
 
         private void txtProductPrice_KeyDown(object sender, KeyEventArgs e)
@@ -388,8 +398,13 @@ namespace BuyProduct
                 if ((txtProductPrice.Text.Equals("")) || (txtProductPrice.Text.Equals("0"))) txtProductPrice.Text = Zero.ToString();
                 txtProductMassa.Focus();
             }
+            else if (e.Key.Equals(Key.OemComma))
+            {
+                e.Handled = true;
+            }
+            
         }
-        #endregion
+      
 
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -407,6 +422,10 @@ namespace BuyProduct
                 if (txtProductMassa.Text.Equals("")|| txtProductMassa.Text.Equals("0")) txtProductMassa.Text = Zero.ToString();
                 cmbProdUnit.Focus();
             }
+            else if (e.Key.Equals(Key.OemComma))
+            {
+                e.Handled = true;
+            }
         }
 
         private void txtProductSkidka_KeyDown(object sender, KeyEventArgs e)
@@ -417,9 +436,9 @@ namespace BuyProduct
             if (e.Key.Equals(Key.Enter)||(e.Key.Equals(Key.Tab)) )
             {
                 if (txtProductSkidka.Text.Equals("")) txtProductSkidka.Text = "0";
-                AddShoping.productPrice = float.Parse(txtProductPrice.Text);
-                AddShoping.productMassa = float.Parse(txtProductMassa.Text);
-                AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text);
+                AddShoping.productPrice = float.Parse(txtProductPrice.Text, CultureInfo.InvariantCulture);
+                AddShoping.productMassa = float.Parse(txtProductMassa.Text, CultureInfo.InvariantCulture);
+                AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text, CultureInfo.InvariantCulture);
 
                // AddShoping.ProductDiscont = (txtProductSkidka.Text == "") ? float.Parse(txtProductSkidka.Text) : { 0};
 
@@ -429,6 +448,10 @@ namespace BuyProduct
 
                 txtProductItogo.Text = String.Format("{0:0.##}",AddShoping.productRashod);
                 cmbShopName.Focus();
+            }
+            else if (e.Key.Equals(Key.OemComma))
+            {
+                e.Handled = true;
             }
         }
     }
