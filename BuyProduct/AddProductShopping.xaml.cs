@@ -51,7 +51,7 @@ namespace BuyProduct
 
 
         PriceShop pokupka;
-
+        float Zero = 0.001f;
         private DateTime dtShop;
 
         public AddProductShopping()
@@ -322,6 +322,10 @@ namespace BuyProduct
                     System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Размерности________________");
 
                     #region разщепляем строчку на Name, City, Addres
+                    if (txtShopName!="")
+                    {
+
+                    }
                     string[] shop = txtShopName.Split(new char[] { ',' });
                     NameShop = shop[0];
                     CityShop = shop[1];
@@ -378,7 +382,12 @@ namespace BuyProduct
 
         private void txtProductPrice_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key.Equals(Key.Enter)) txtProductMassa.Focus();
+            if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
+            {
+                //AddShoping.productPrice = (txtProductPrice.Text == "") ? float.Parse(txtProductPrice.Text) : 0 ;
+                if ((txtProductPrice.Text.Equals("")) || (txtProductPrice.Text.Equals("0"))) txtProductPrice.Text = Zero.ToString();
+                txtProductMassa.Focus();
+            }
         }
         #endregion
 
@@ -392,7 +401,12 @@ namespace BuyProduct
 
         private void txtProductMassa_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key.Equals(Key.Enter)) cmbProdUnit.Focus();
+            if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
+            {
+                //AddShoping.productMassa = (txtProductMassa.Text == "") ? float.Parse(txtProductMassa.Text) : 0 ;
+                if (txtProductMassa.Text.Equals("")|| txtProductMassa.Text.Equals("0")) txtProductMassa.Text = Zero.ToString();
+                cmbProdUnit.Focus();
+            }
         }
 
         private void txtProductSkidka_KeyDown(object sender, KeyEventArgs e)
@@ -400,12 +414,16 @@ namespace BuyProduct
             
             
 
-            if (e.Key.Equals(Key.Enter))
+            if (e.Key.Equals(Key.Enter)||(e.Key.Equals(Key.Tab)) )
             {
+                if (txtProductSkidka.Text.Equals("")) txtProductSkidka.Text = "0";
                 AddShoping.productPrice = float.Parse(txtProductPrice.Text);
                 AddShoping.productMassa = float.Parse(txtProductMassa.Text);
                 AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text);
-               //float tt = (AddShoping.productPrice * AddShoping.productMassa) - AddShoping.ProductDiscont;
+
+               // AddShoping.ProductDiscont = (txtProductSkidka.Text == "") ? float.Parse(txtProductSkidka.Text) : { 0};
+
+                float tt = (AddShoping.productPrice * AddShoping.productMassa) - AddShoping.ProductDiscont;
                
 
 
