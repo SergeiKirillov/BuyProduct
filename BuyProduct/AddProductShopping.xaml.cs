@@ -166,23 +166,9 @@ namespace BuyProduct
             }
         }
 
-        private void LoadComboBox2()
-        {
-            using (var connection = new SQLiteConnection("Data Source = product.db"))
-            {
-                connection.Open();
+        
 
-                
-
-            }
-        }
-
-        private void BtnSaveDB_Click(object sender, RoutedEventArgs e)
-        {
-            dtShop = (DateTime)dtShoping.SelectedDate;
-
-            LoadComboBox();
-        }
+        
 
         private void cmbCategoriaProduct_LostFocus(object sender, RoutedEventArgs e)
         {
@@ -467,9 +453,9 @@ namespace BuyProduct
             if (e.Key.Equals(Key.Enter)||(e.Key.Equals(Key.Tab)) )
             {
                 if (txtProductSkidka.Text.Equals("")) txtProductSkidka.Text = "0";
-                AddShoping.productPrice = float.Parse(txtProductPrice.Text, CultureInfo.InvariantCulture);
-                AddShoping.productMassa = float.Parse(txtProductMassa.Text, CultureInfo.InvariantCulture);
-                AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text, CultureInfo.InvariantCulture);
+                AddShoping.productPrice = float.Parse(txtProductPrice.Text.Replace(",","."), CultureInfo.InvariantCulture);
+                AddShoping.productMassa = float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture);
 
                // AddShoping.ProductDiscont = (txtProductSkidka.Text == "") ? float.Parse(txtProductSkidka.Text) : { 0};
 
@@ -485,5 +471,70 @@ namespace BuyProduct
                 e.Handled = true;
             }
         }
+
+
+        private void BtnSaveDB_Click(object sender, RoutedEventArgs e)
+        {
+            dtShop = (DateTime)dtShoping.SelectedDate;
+            string strdtShop;
+
+            string strproductName = txtProductName.Text;
+            string strProductCategoriaName = cmbCategoriaProduct.Text;
+            string strproductDateTime = dtShop.ToString("dd.MM.yyyy");
+            float flproductPrice = float.Parse(txtProductPrice.Text.Replace(".", ","), CultureInfo.InvariantCulture); 
+            float flproductMassa = float.Parse(txtProductMassa.Text.Replace(".", ","), CultureInfo.InvariantCulture); ;
+            float flproductRashod = float.Parse(txtProductItogo.Text.Replace(".", ","), CultureInfo.InvariantCulture); ;
+            string strShopName = cmbShopName.Text;
+            float flProductDiscont= float.Parse(txtProductSkidka.Text.Replace(".", ","), CultureInfo.InvariantCulture); ;
+            string strproductUnit = cmbProdUnit.Text;
+            string strCategoriaShopping = cmbCatShop.Text;
+
+
+            #region Записываем данные в БД
+            using (var connection = new SQLiteConnection("Data Source = product.db"))
+            {
+                connection.Open();
+                string sqlExpression;
+                SQLiteCommand command;
+
+                sqlExpression = "INSERT INTO  PriceShops(productName,ProductCategoriaName,productDateTime,productPrice,productMassa,productRashod,ShopName,ProductDiscont,productUnit,CategoriaShopping) " +
+                    "VALUES ('" +
+                    strproductName + "','" +
+                    strProductCategoriaName + "','" +
+                    strproductDateTime + "'," +
+                    flproductPrice + "," +
+                    flproductMassa + "," +
+                    flproductRashod + ",'" +
+                    strShopName + "'," +
+                    flProductDiscont + ",'" +
+                    strproductUnit + "','" +
+                    strCategoriaShopping + "'" +
+                    ")";
+                command = new SQLiteCommand(sqlExpression, connection);
+
+                int result = command.ExecuteNonQuery();
+
+                if (!result.Equals(0))
+                {
+                    txtProductName.Text = "";
+                    cmbCategoriaProduct.Text = "";
+                    txtProductPrice.Text = "";
+                    txtProductMassa.Text = "";
+                    txtProductItogo.Text = "";
+                    txtProductSkidka.Text = "";
+                    cmbProdUnit.Text = "";
+
+
+                }
+
+                connection.Close();
+
+            }
+
+            #endregion
+
+            LoadComboBox();
+        }
+
     }
 }
