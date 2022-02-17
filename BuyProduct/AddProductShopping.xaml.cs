@@ -311,48 +311,79 @@ namespace BuyProduct
             if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
             {
                 string txtShopName = cmbShopName.Text;
-                string NameShop;
-                string CityShop;
-                String AddresShop;
-
-                //System.Diagnostics.Debug.WriteLine(txtCatProduct);
-
-                if (!cmbShopName.Items.Contains(txtShopName))
+                if (!txtShopName.Equals(""))
                 {
-                    cmbShopName.Items.Add(txtShopName);
-                    System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Размерности________________");
+                    string NameShop;
+                    string CityShop="";
+                    string AddresShop="";
 
-                    #region разщепляем строчку на Name, City, Addres
-                    if (txtShopName!="")
+                    //System.Diagnostics.Debug.WriteLine(txtCatProduct);
+
+                    if (!cmbShopName.Items.Contains(txtShopName))
                     {
+                        cmbShopName.Items.Add(txtShopName);
+                        System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Размерности________________");
+
+                        #region разщепляем строчку на Name, City, Addres
+                        
+                        string[] shop = txtShopName.Split(new char[] { ',' });
+
+                        NameShop = shop[0];
+                        if (!NameShop.Equals(""))
+                        {
+                            if (shop.Length>1)
+                            {
+                                CityShop = !shop[1].Equals("") ? shop[1] : "Темиртау";
+                                AddresShop = shop[2];
+                            }
+                            else 
+                            {
+                                CityShop = "Темиртау";
+                            }
+
+                            //CityShop = !shop[1].Equals("")?shop[1]:"Темиртау";
+                            //AddresShop = shop[2];
+
+                            #region Записываем данные в БД
+                            using (var connection = new SQLiteConnection("Data Source = product.db"))
+                            {
+                                connection.Open();
+                                string sqlExpression;
+                                SQLiteCommand command;
+
+                                sqlExpression = "INSERT INTO  ShopName(Name,City,Addres) VALUES ('" + NameShop + "','" + CityShop + "','" + AddresShop + "')";
+                                command = new SQLiteCommand(sqlExpression, connection);
+
+                                int result = command.ExecuteNonQuery();
+
+                                if (!result.Equals(0))
+                                {
+                                    cmbShopName.Items.Add(NameShop+","+ CityShop+","+ AddresShop);
+                                }
+                                connection.Close();
+
+                            }
+
+                            #endregion
+                        }
+                        else
+                        {
+                            cmbShopName.Focus();
+                        }
+                       
+                        #endregion
+
+
+                        
 
                     }
-                    string[] shop = txtShopName.Split(new char[] { ',' });
-                    NameShop = shop[0];
-                    CityShop = shop[1];
-                    AddresShop = shop[2];
-                    #endregion
-
-
-                    #region Записываем данные в БД
-                    using (var connection = new SQLiteConnection("Data Source = product.db"))
-                    {
-                        connection.Open();
-                        string sqlExpression;
-                        SQLiteCommand command;
-
-                        sqlExpression = "INSERT INTO  ShopName(Name,City,Addres) VALUES ('" + NameShop+"','"+ CityShop+"','"+ AddresShop+ "')";
-                        command = new SQLiteCommand(sqlExpression, connection);
-
-                        int result = command.ExecuteNonQuery();
-
-                        connection.Close();
-
-                    }
-
-                    #endregion
-
                 }
+                else
+                {
+                    cmbShopName.Focus();
+                }
+                
+               
 
 
             }
