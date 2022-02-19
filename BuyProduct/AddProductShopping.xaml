@@ -28,38 +28,38 @@
         </Grid.RowDefinitions>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Text="Дата покупки"/>
-        <DatePicker Name="dtShoping" HorizontalAlignment="Left" VerticalAlignment="Center"  Grid.Column="2" Grid.Row="0"/>
+        <DatePicker Name="dtShoping" HorizontalAlignment="Left" VerticalAlignment="Center"  Grid.Column="2" Grid.Row="0" TabIndex="1"/>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Text="Название продукта"/>
-        <TextBox Name="txtProductName"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" Text="Введите название продукта" GotFocus="txtProductName_GotFocus"></TextBox>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Text="Категория продукта"/>
+        <ComboBox Name="cmbCategoriaProduct" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" KeyDown="cmbCategoriaProduct_KeyDown" TabIndex="2" />
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Text="Название продукта"/>
+        <TextBox Name="txtProductName"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" Text="Введите название продукта" GotFocus="txtProductName_GotFocus" TabIndex="3"></TextBox>
         
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Text="Категория продукта"/>
-        <ComboBox Name="cmbCategoriaProduct" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="2" KeyDown="cmbCategoriaProduct_KeyDown" />
-
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" Text="Категория расходов"/>
-        <ComboBox Name="cmbCatShop" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" KeyDown="cmbCatShop_KeyDown"/>
+        <ComboBox Name="cmbCatShop" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="3" KeyDown="cmbCatShop_KeyDown" TabIndex="4"/>
         
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" Text="Цена за единицу"/>
-        <TextBox Name="txtProductPrice"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" Text="" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductPrice_KeyDown" ></TextBox>
+        <TextBox Name="txtProductPrice"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" Text="" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductPrice_KeyDown" TabIndex="5" ></TextBox>
         
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" Text="Масса"/>
-        <TextBox Name="txtProductMassa"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="5" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductMassa_KeyDown">
+        <TextBox Name="txtProductMassa"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="5" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductMassa_KeyDown" TabIndex="6">
             
         </TextBox>
         
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" Text="Ед измерения массы"/>
-        <ComboBox Name="cmbProdUnit" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="6" KeyDown="cmbProdUnit_KeyDown" />
+        <ComboBox Name="cmbProdUnit" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="6" KeyDown="cmbProdUnit_KeyDown" TabIndex="7" />
         
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" Text="Скидка"/>
-        <TextBox Name="txtProductSkidka"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" Text="" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductSkidka_KeyDown"></TextBox>
+        <TextBox Name="txtProductSkidka"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" Text="" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductSkidka_KeyDown" TabIndex="8"></TextBox>
         
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" Text="Итого за товар"/>
-        <TextBox Name="txtProductItogo" IsEnabled="False" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="8" Text="Итого (Заполняется автоматически)"></TextBox>
+        <TextBox Name="txtProductItogo" IsEnabled="False" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="8" Text="Итого (Заполняется автоматически)" IsTabStop="False"></TextBox>
         
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9" Text="Магазин"/>
-        <ComboBox Name="cmbShopName" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="9" KeyDown="cmbShopName_KeyDown"/>
+        <ComboBox Name="cmbShopName" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="9" KeyDown="cmbShopName_KeyDown" TabIndex="9"/>
 
-        <Button Grid.Column="2" Width="200" Height="50" Grid.Row="10" Name="btnSaveDB" Content="Add" Click="BtnSaveDB_Click"/>
+        <Button Grid.Column="2" Width="200" Height="50" Grid.Row="10" Name="btnSaveDB" Content="Add" Click="BtnSaveDB_Click" TabIndex="10"/>
 
 
     </Grid>
