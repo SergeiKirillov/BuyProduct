@@ -625,7 +625,6 @@ namespace BuyProduct
             #region Заполнение даннми при получении фокуса
 
            
-            cmbProductName.Items.Clear();
 
             using (var connection = new SQLiteConnection("Data Source = product.db"))
             {
@@ -635,14 +634,9 @@ namespace BuyProduct
 
 
                 #region Подкласс продуктов 
-                if (!cmbCategoriaProduct.Text.Equals(""))
-                {
-                    sqlExpression = "select productName,ProductCategoriaName from ProductNames where ProductCategoriaName='" + cmbCategoriaProduct.Text + "' order by productName asc";
-                }
-                else
-                {
-                    sqlExpression = "select productName,ProductCategoriaName from ProductNames order by productName asc";
-                }    
+                
+                sqlExpression = "select productName,ProductCategoriaName from ProductNames where ProductCategoriaName='" + cmbCategoriaProduct.Text + "' order by productName asc";
+                    
                 
                 command = new SQLiteCommand(sqlExpression, connection);
 
@@ -650,19 +644,23 @@ namespace BuyProduct
                 {
                     if (reader.HasRows)
                     {
+                        cmbProductName.Items.Clear();
+
                         while (reader.Read())
                         {
                             cmbProductName.Items.Add(reader.GetString(0));
+                            cmbProductName.Text = cmbProductName.Items[0].ToString();
 
                         }
 
+                        
 
                     }
 
                 }
                 #endregion
 
-                cmbProductName.Text = cmbProductName.Items[0].ToString();
+                
                 connection.Close();
 
             }
@@ -676,7 +674,7 @@ namespace BuyProduct
 
             if (!cmbProductName.Text.Equals(""))
             {
-                cmbCatShop.Items.Clear();
+                
 
                 using (var connection = new SQLiteConnection("Data Source = product.db"))
                 {
@@ -684,8 +682,10 @@ namespace BuyProduct
                     string sqlExpression;
                     SQLiteCommand command;
 
+                        sqlExpression = (cmbCatShop.Text.Equals(""))&&(cmbCategoriaProduct.Text.Equals(""))
+                        ? "select ProductCategoriaName,CategoriaShopping from ProductNames  order by CategoriaShopping asc"
+                        : "select ProductCategoriaName,CategoriaShopping from ProductNames where ProductCategoriaName='" + cmbCategoriaProduct.Text + "' order by CategoriaShopping asc";
 
-                    sqlExpression = "select ProductCategoriaName,CategoriaShopping from ProductNames where ProductCategoriaName='" + cmbCategoriaProduct.Text + "' order by CategoriaShopping asc";
 
 
                     command = new SQLiteCommand(sqlExpression, connection);
@@ -694,6 +694,8 @@ namespace BuyProduct
                     {
                         if (reader.HasRows)
                         {
+                            cmbCatShop.Items.Clear();
+
                             while (reader.Read())
                             {
                                 cmbCatShop.Items.Add(reader.GetString(1));
@@ -701,12 +703,12 @@ namespace BuyProduct
 
                             }
 
-
+                            cmbCatShop.Text = cmbCatShop.Items[0].ToString();
                         }
 
                     }
                    
-                    cmbCatShop.Text = cmbCatShop.Items[0].ToString();
+                    
 
                     connection.Close();
                 }
