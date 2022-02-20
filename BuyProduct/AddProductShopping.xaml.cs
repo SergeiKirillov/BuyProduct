@@ -140,7 +140,6 @@ namespace BuyProduct
                 }
                 #endregion
 
-
                 #region Магазин
                 sqlExpression = "select name,City,Addres from ShopName order by name asc";
                 command = new SQLiteCommand(sqlExpression, connection);
@@ -221,6 +220,7 @@ namespace BuyProduct
             if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
             {
                 string txtCatShop = cmbCatShop.Text;
+                string txtProductName = cmbProductName.Text;
 
                 //System.Diagnostics.Debug.WriteLine(txtCatProduct);
 
@@ -230,14 +230,14 @@ namespace BuyProduct
                     System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Расходов________________");
 
 
-                    #region Записываем данные в БД
+                    #region Записываем данные в БД CatShop
                     using (var connection = new SQLiteConnection("Data Source = product.db"))
                     {
                         connection.Open();
                         string sqlExpression;
                         SQLiteCommand command;
 
-                        sqlExpression = "INSERT INTO  CatShop(CategoriaShopping) VALUES ('"+ txtCatShop + "')";
+                        sqlExpression = "INSERT INTO  CatShop(CategoriaShopping) VALUES ('" + txtCatShop + "')";
                         command = new SQLiteCommand(sqlExpression, connection);
 
                         int result = command.ExecuteNonQuery();
@@ -245,11 +245,41 @@ namespace BuyProduct
                         connection.Close();
 
                     }
-
                     #endregion
+                }
+
+                #region Сохраняем В БД  ProductNames
+
+                using (var connection = new SQLiteConnection("Data Source = product.db"))
+                {
+                    connection.Open();
+                    string sqlExpression;
+                    SQLiteCommand command;
+
+                    sqlExpression = "select productName from ProductNames where productName='" + txtProductName + "'";
+                    command = new SQLiteCommand(sqlExpression, connection);
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (!reader.HasRows)
+                        {
+                            sqlExpression = "INSERT INTO  ProductNames(productName,ProductCategoriaName,CategoriaShopping) VALUES ('" + txtProductName + "','" + cmbCategoriaProduct.Text + "','" + txtCatShop + "')";
+                            command = new SQLiteCommand(sqlExpression, connection);
+
+                            int result = command.ExecuteNonQuery();
+
+
+                        }
+
+                    }
+
+                    connection.Close();
 
                 }
 
+                #endregion
+
+                
 
             }
         }
@@ -265,7 +295,7 @@ namespace BuyProduct
                 if (!cmbProdUnit.Items.Contains(txtProdUnit))
                 {
                     cmbProdUnit.Items.Add(txtProdUnit);
-                    System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Размерности________________");
+                    //System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию Категория Размерности________________");
 
 
                     #region Записываем данные в БД
@@ -368,8 +398,40 @@ namespace BuyProduct
                 {
                     cmbShopName.Focus();
                 }
-                
-               
+
+                #region записываем значение в таблицу ProductNames 
+                // string txtProductName = cmbProductName.Text;
+
+
+
+                //if (!cmbProductName.Items.Contains(txtProductName))
+                //{
+                //    cmbProductName.Items.Add(txtProductName);
+                //    System.Diagnostics.Debug.WriteLine("________________Добавлено в коллекцию ПодКласс Продукта________________");
+
+
+                //    #region Записываем данные в БД
+                //    using (var connection = new SQLiteConnection("Data Source = product.db"))
+                //    {
+                //        connection.Open();
+                //        string sqlExpression;
+                //        SQLiteCommand command;
+
+                //        sqlExpression = "INSERT INTO  ProductNames(productName,ProductCategoriaName) VALUES ('" + txtProductName + "','"+ cmbCategoriaProduct.Text + "')";
+                //        command = new SQLiteCommand(sqlExpression, connection);
+
+                //        int result = command.ExecuteNonQuery();
+
+                //        connection.Close();
+
+                //    }
+
+                //    #endregion
+
+                //}
+
+                #endregion
+
 
 
             }
@@ -377,9 +439,9 @@ namespace BuyProduct
 
         private void txtProductName_GotFocus(object sender, RoutedEventArgs e)
         {
-            setKLName("00000419");
-            txtProductName.SelectionStart = 0;
-            txtProductName.SelectionLength = txtProductName.Text.Length;
+            //setKLName("00000419");
+            //txtProductName.SelectionStart = 0;
+            //txtProductName.SelectionLength = txtProductName.Text.Length;
             
         }
 
@@ -478,7 +540,7 @@ namespace BuyProduct
             dtShop = (DateTime)dtShoping.SelectedDate;
             string strdtShop;
 
-            string strproductName = txtProductName.Text;
+            string strproductName = cmbProductName.Text;
             string strProductCategoriaName = cmbCategoriaProduct.Text;
             string strproductDateTime = dtShop.ToString("dd.MM.yyyy");
             float flproductPrice = float.Parse(txtProductPrice.Text.Replace(".", ","), CultureInfo.InvariantCulture); 
@@ -516,7 +578,9 @@ namespace BuyProduct
 
                 if (!result.Equals(0))
                 {
-                    txtProductName.Text = "";
+                    //txtProductName.Text = ""; 
+                    cmbProductName.Text = "";
+                    
                     cmbCategoriaProduct.Text = "";
                     txtProductPrice.Text = "";
                     txtProductMassa.Text = "";
@@ -536,5 +600,119 @@ namespace BuyProduct
             LoadComboBox();
         }
 
+        private void cmbProductName_KeyDown(object sender, KeyEventArgs e)
+        {
+            #region событие при нажатии на Enter или Tab
+            string txtProductName = cmbProductName.Text;
+
+            if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
+            {
+                if (!cmbProductName.Items.Contains(txtProductName))
+                {
+                    cmbProductName.Items.Add(txtProductName);
+
+
+                }
+
+                cmbCatShop.Focus();
+            }
+
+            #endregion
+        }
+
+        private void cmbProductName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            #region Заполнение даннми при получении фокуса
+
+           
+            cmbProductName.Items.Clear();
+
+            using (var connection = new SQLiteConnection("Data Source = product.db"))
+            {
+                connection.Open();
+                string sqlExpression;
+                SQLiteCommand command;
+
+
+                #region Подкласс продуктов 
+                if (!cmbCategoriaProduct.Text.Equals(""))
+                {
+                    sqlExpression = "select productName,ProductCategoriaName from ProductNames where ProductCategoriaName='" + cmbCategoriaProduct.Text + "' order by productName asc";
+                }
+                else
+                {
+                    sqlExpression = "select productName,ProductCategoriaName from ProductNames order by productName asc";
+                }    
+                
+                command = new SQLiteCommand(sqlExpression, connection);
+
+                using (SQLiteDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            cmbProductName.Items.Add(reader.GetString(0));
+
+                        }
+
+
+                    }
+
+                }
+                #endregion
+
+                cmbProductName.Text = cmbProductName.Items[0].ToString();
+                connection.Close();
+
+            }
+
+            #endregion
+        }
+
+        private void cmbCatShop_GotFocus(object sender, RoutedEventArgs e)
+        {
+            #region При получении фокуса если элемент подкласс выбран то получаем в зависимости от подкласса значения и заполняем элемент
+
+            if (!cmbProductName.Text.Equals(""))
+            {
+                cmbCatShop.Items.Clear();
+
+                using (var connection = new SQLiteConnection("Data Source = product.db"))
+                {
+                    connection.Open();
+                    string sqlExpression;
+                    SQLiteCommand command;
+
+
+                    sqlExpression = "select ProductCategoriaName,CategoriaShopping from ProductNames where ProductCategoriaName='" + cmbCategoriaProduct.Text + "' order by CategoriaShopping asc";
+
+
+                    command = new SQLiteCommand(sqlExpression, connection);
+
+                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            while (reader.Read())
+                            {
+                                cmbCatShop.Items.Add(reader.GetString(1));
+                                
+
+                            }
+
+
+                        }
+
+                    }
+                   
+                    cmbCatShop.Text = cmbCatShop.Items[0].ToString();
+
+                    connection.Close();
+                }
+
+            }
+            #endregion
+        }
     }
 }
