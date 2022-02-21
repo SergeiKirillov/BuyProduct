@@ -166,9 +166,6 @@ namespace BuyProduct
         }
 
         
-
-        
-
         private void cmbCategoriaProduct_LostFocus(object sender, RoutedEventArgs e)
         {
             if (!cmbCategoriaProduct.IsKeyboardFocusWithin && String.IsNullOrEmpty(cmbCategoriaProduct.Text))
@@ -474,8 +471,24 @@ namespace BuyProduct
             if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
             {
                 //AddShoping.productPrice = (txtProductPrice.Text == "") ? float.Parse(txtProductPrice.Text) : 0 ;
-                if ((txtProductPrice.Text.Equals("")) || (txtProductPrice.Text.Equals("0"))) txtProductPrice.Text = Zero.ToString();
-                txtProductMassa.Focus();
+                if ((txtProductPrice.Text.Equals("")) || (txtProductPrice.Text.Equals("0")))
+                {
+                    txtProductPrice.Text = "0";
+                    txtProductItogo.IsEnabled = true;
+                    txtProductItogo.TabIndex = 6;
+                    txtProductItogo.IsTabStop = true;
+                    txtProductPrice.IsTabStop = false;
+                    txtProductMassa.Focus();
+                }
+                else
+                {
+                    txtProductItogo.IsEnabled = false;
+                    txtProductItogo.IsTabStop = false;
+                    txtProductMassa.TabIndex = 6;
+                    txtProductMassa.IsTabStop = true;
+                    txtProductMassa.Focus();
+                }
+                
             }
             else if (e.Key.Equals(Key.OemComma))
             {
@@ -587,6 +600,7 @@ namespace BuyProduct
                     txtProductItogo.Text = "";
                     txtProductSkidka.Text = "";
                     cmbProdUnit.Text = "";
+
 
 
                 }
@@ -715,6 +729,38 @@ namespace BuyProduct
 
             }
             #endregion
+        }
+
+        private void txtProductItogo_GotFocus(object sender, RoutedEventArgs e)
+        {
+            //setKLName("00000419");
+            txtProductItogo.SelectionStart = 0;
+            txtProductItogo.SelectionLength = txtProductItogo.Text.Length;
+        }
+
+        private void txtProductItogo_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
+            {
+                if (txtProductSkidka.Text.Equals("")) txtProductSkidka.Text = "0";
+                
+                AddShoping.productMassa = float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                float flItogo = float.Parse(txtProductItogo.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                // AddShoping.ProductDiscont = (txtProductSkidka.Text == "") ? float.Parse(txtProductSkidka.Text) : { 0};
+
+                float tt = (flItogo/AddShoping.productMassa) - AddShoping.ProductDiscont;
+
+                AddShoping.productPrice = tt;
+
+
+                txtProductPrice.Text = String.Format("{0:0.##}", AddShoping.productPrice);
+                cmbShopName.Focus();
+            }
+            else if (e.Key.Equals(Key.OemComma))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
