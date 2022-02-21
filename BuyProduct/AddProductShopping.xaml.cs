@@ -528,7 +528,11 @@ namespace BuyProduct
             if (e.Key.Equals(Key.Enter)||(e.Key.Equals(Key.Tab)) )
             {
                 if (txtProductSkidka.Text.Equals("")) txtProductSkidka.Text = "0";
-                AddShoping.productPrice = float.Parse(txtProductPrice.Text.Replace(",","."), CultureInfo.InvariantCulture);
+                if (!txtProductPrice.Text.Equals(""))
+                {
+                    AddShoping.productPrice = float.Parse(txtProductPrice.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                } 
+                
                 AddShoping.productMassa = float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture);
                 AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture);
 
@@ -600,6 +604,18 @@ namespace BuyProduct
                     txtProductItogo.Text = "";
                     txtProductSkidka.Text = "";
                     cmbProdUnit.Text = "";
+
+                    dtShoping.TabIndex = 1;
+                    cmbCategoriaProduct.TabIndex = 2;
+                    cmbProductName.TabIndex = 3;
+                    cmbCatShop.TabIndex = 4;
+                    txtProductPrice.TabIndex = 5;
+                    txtProductMassa.TabIndex = 6;
+                    cmbProdUnit.TabIndex = 7;
+                    txtProductSkidka.TabIndex = 8;
+                    txtProductItogo.IsTabStop = false;
+                    cmbShopName.TabIndex = 9;
+                    btnSaveDB.TabIndex = 10;
 
 
 
