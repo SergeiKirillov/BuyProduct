@@ -5,12 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BuyProduct"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Главное окно" Height="450" Width="800">
+    <StackPanel>
         <Label>
             1) Несколько списков покупок: планируемый, текущий, машина, 
             2)
 
         </Label>
-    </Grid>
+        <Button x:Name="btnAdd" Content="Добавление позиции в БД" Width="300" Height="50" Click="btnAdd_Click"></Button>
+        <Button x:Name="btnView" Content="Просмотр записей в БД" Width="300" Height="50" Click="btnView_Click"></Button>
+    </StackPanel>
 </Window>

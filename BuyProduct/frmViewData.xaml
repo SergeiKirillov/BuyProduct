@@ -1,0 +1,14 @@
+﻿<Window x:Class="BuyProduct.frmViewData"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BuyProduct"
+        mc:Ignorable="d"
+        Title="Просмотр данных за выбранную дату с фильтрацией по классу(категории)" Height="450" Width="800">
+    <Grid>
+        <DataGrid x:Name="dgViewClass"></DataGrid>
+        <Label></Label>
+        <DataGrid x:Name="dgViewProduct"></DataGrid>
+    </Grid>
+</Window>
