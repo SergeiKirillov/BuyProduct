@@ -219,6 +219,8 @@ namespace BuyProduct
                 string txtCatShop = cmbCatShop.Text;
                 string txtProductName = cmbProductName.Text;
 
+                System.Diagnostics.Debug.WriteLine($"*КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+
                 //System.Diagnostics.Debug.WriteLine(txtCatProduct);
 
                 if (!cmbCatShop.Items.Contains(txtCatShop))
@@ -275,8 +277,11 @@ namespace BuyProduct
                 }
 
                 #endregion
+               
+                MoveToNextElement(e);
 
-                
+                //txtProductPrice.Focus();
+
 
             }
         }
@@ -286,6 +291,8 @@ namespace BuyProduct
             if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
             {
                 string txtProdUnit = cmbProdUnit.Text;
+
+                System.Diagnostics.Debug.WriteLine($"КатРасход,Цена1ед,Кол-во,*ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
 
                 //System.Diagnostics.Debug.WriteLine(txtCatProduct);
 
@@ -470,12 +477,20 @@ namespace BuyProduct
         {
             if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
             {
+
+                System.Diagnostics.Debug.WriteLine($"КатРасход,*Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+
                 //AddShoping.productPrice = (txtProductPrice.Text == "") ? float.Parse(txtProductPrice.Text) : 0 ;
                 if ((txtProductPrice.Text.Equals("")) || (txtProductPrice.Text.Equals("0")))
                 {
                     txtProductPrice.Text = "0";
                     txtProductItogo.IsEnabled = true;
-                    txtProductItogo.TabIndex = 6;
+                    txtProductItogo.TabIndex = 9;
+
+                    txtProductMassa.TabIndex = 6;
+                    cmbProdUnit.TabIndex = 7;
+                    txtProductSkidka.TabIndex = 8;
+                    btnSaveDB.TabIndex = 10;
                     txtProductItogo.IsTabStop = true;
                     txtProductPrice.IsTabStop = false;
                     txtProductMassa.Focus();
@@ -485,10 +500,17 @@ namespace BuyProduct
                     txtProductItogo.IsEnabled = false;
                     txtProductItogo.IsTabStop = false;
                     txtProductMassa.TabIndex = 6;
+                    cmbProdUnit.TabIndex = 7;
+                    txtProductSkidka.TabIndex = 8;
+                    btnSaveDB.TabIndex = 9;
+                    txtProductItogo.TabIndex = 11;
                     txtProductMassa.IsTabStop = true;
                     txtProductMassa.Focus();
                 }
-                
+
+               //MoveToNextElement(e);
+
+
             }
             else if (e.Key.Equals(Key.OemComma))
             {
@@ -501,6 +523,7 @@ namespace BuyProduct
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
+            //System.Diagnostics.Debug.WriteLine($"Текст блок имя {tb.Text}");
             tb.SelectionStart = 0;
             tb.SelectionLength = tb.Text.Length;
 
@@ -508,6 +531,8 @@ namespace BuyProduct
 
         private void txtProductMassa_KeyDown(object sender, KeyEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine($"КатРасход,Цена1ед,*Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+
             if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
             {
                 //AddShoping.productMassa = (txtProductMassa.Text == "") ? float.Parse(txtProductMassa.Text) : 0 ;
@@ -616,7 +641,13 @@ namespace BuyProduct
                     txtProductItogo.IsTabStop = false;
                     cmbShopName.TabIndex = 9;
                     btnSaveDB.TabIndex = 10;
+                    txtProductItogo.TabIndex = 11;
+                    txtProductPrice.IsEnabled = true;
+                    txtProductPrice.IsTabStop = true;
+                    txtProductItogo.IsTabStop = false;
+                    txtProductItogo.IsEnabled = false;
 
+                    System.Diagnostics.Debug.WriteLine($"Сброс-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
 
 
                 }
@@ -634,6 +665,8 @@ namespace BuyProduct
         {
             #region событие при нажатии на Enter или Tab
             string txtProductName = cmbProductName.Text;
+            
+            System.Diagnostics.Debug.WriteLine($"Подкласс продукта-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
 
             if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
             {
@@ -644,7 +677,9 @@ namespace BuyProduct
 
                 }
 
-                cmbCatShop.Focus();
+                //cmbCatShop.Focus();
+                MoveToNextElement(e);
+
             }
 
             #endregion
@@ -771,11 +806,43 @@ namespace BuyProduct
 
 
                 txtProductPrice.Text = String.Format("{0:0.##}", AddShoping.productPrice);
+
+                //txtProductPrice.IsEnabled = true;
+                //txtProductPrice.IsTabStop = false;
+                //txtProductItogo.IsTabStop = true;
+                //txtProductItogo.IsEnabled = false;
                 cmbShopName.Focus();
+
+
             }
             else if (e.Key.Equals(Key.OemComma))
             {
                 e.Handled = true;
+            }
+        }
+
+        private void cmbCatShop_LostFocus(object sender, RoutedEventArgs e)
+        {
+            
+            
+        }
+        void MoveToNextElement(KeyEventArgs e)
+        {
+            ///https://answacode.com/questions/8203329/perehod-k-sleduyushemu-elementu-upravleniya-nazhatiem-klavishi-enter-v-wpf
+            // Creating a FocusNavigationDirection object and setting it to a
+            // local field that contains the direction selected.
+            FocusNavigationDirection focusDirection = FocusNavigationDirection.Next;
+
+            // MoveFocus takes a TraveralReqest as its argument.
+            TraversalRequest request = new TraversalRequest(focusDirection);
+
+            // Gets the element with keyboard focus.
+            UIElement elementWithFocus = Keyboard.FocusedElement as UIElement;
+
+            // Change keyboard focus.
+            if (elementWithFocus != null)
+            {
+                if (elementWithFocus.MoveFocus(request)) e.Handled = true;
             }
         }
     }
