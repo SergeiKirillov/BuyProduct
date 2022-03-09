@@ -23,6 +23,8 @@ namespace BuyProduct
     public partial class AddProductShopping : Window
     {
         PriceShop AddShoping = new PriceShop();
+       
+
 
         #region Автоматическое переключение раскладки
         //*****************************************************
@@ -59,12 +61,15 @@ namespace BuyProduct
         {
             InitializeComponent();
 
+            
+
             pokupka = new PriceShop();
             this.DataContext = pokupka;
 
             dtShop = DateTime.Now;
 
             LoadComboBox();
+
 
         }
 
@@ -219,7 +224,7 @@ namespace BuyProduct
                 string txtCatShop = cmbCatShop.Text;
                 string txtProductName = cmbProductName.Text;
 
-                System.Diagnostics.Debug.WriteLine($"*КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+                System.Diagnostics.Debug.WriteLine($"*КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
 
                 //System.Diagnostics.Debug.WriteLine(txtCatProduct);
 
@@ -292,7 +297,7 @@ namespace BuyProduct
             {
                 string txtProdUnit = cmbProdUnit.Text;
 
-                System.Diagnostics.Debug.WriteLine($"КатРасход,Цена1ед,Кол-во,*ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+                System.Diagnostics.Debug.WriteLine($"КатРасход,Цена1ед,Кол-во,*ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
 
                 //System.Diagnostics.Debug.WriteLine(txtCatProduct);
 
@@ -322,6 +327,20 @@ namespace BuyProduct
 
                 }
 
+
+
+                if (!txtProductPrice.Text.Equals("0"))
+                {
+                    float massa = float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                    float Price1ed = float.Parse(txtProductPrice.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                    float tt = Price1ed * massa;
+                    txtItogo.Text = String.Format("{0:0.##}", tt);
+                }
+
+                    txtProductSkidka.Focus();
+
+
+               
 
             }
         }
@@ -478,32 +497,32 @@ namespace BuyProduct
             if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
             {
 
-                System.Diagnostics.Debug.WriteLine($"КатРасход,*Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+                System.Diagnostics.Debug.WriteLine($"КатРасход,*Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
 
                 //AddShoping.productPrice = (txtProductPrice.Text == "") ? float.Parse(txtProductPrice.Text) : 0 ;
                 if ((txtProductPrice.Text.Equals("")) || (txtProductPrice.Text.Equals("0")))
                 {
                     txtProductPrice.Text = "0";
-                    txtProductItogo.IsEnabled = true;
-                    txtProductItogo.TabIndex = 9;
+                    txtItogo.IsEnabled = true;
+                    txtItogo.TabIndex = 9;
 
-                    txtProductMassa.TabIndex = 6;
-                    cmbProdUnit.TabIndex = 7;
-                    txtProductSkidka.TabIndex = 8;
-                    btnSaveDB.TabIndex = 10;
-                    txtProductItogo.IsTabStop = true;
+                    txtProductMassa.TabIndex = 7;
+                    cmbProdUnit.TabIndex = 8;
+                    txtProductSkidka.TabIndex = 10;
+                    btnSaveDB.TabIndex = 11;
+                    txtItogo.IsTabStop = true;
                     txtProductPrice.IsTabStop = false;
                     txtProductMassa.Focus();
                 }
                 else
                 {
-                    txtProductItogo.IsEnabled = false;
-                    txtProductItogo.IsTabStop = false;
-                    txtProductMassa.TabIndex = 6;
-                    cmbProdUnit.TabIndex = 7;
-                    txtProductSkidka.TabIndex = 8;
-                    btnSaveDB.TabIndex = 9;
-                    txtProductItogo.TabIndex = 11;
+                    txtItogo.IsEnabled = false;
+                    txtItogo.IsTabStop = false;
+                    txtProductMassa.TabIndex = 7;
+                    cmbProdUnit.TabIndex = 8;
+                    txtProductSkidka.TabIndex = 9;
+                    btnSaveDB.TabIndex = 10;
+                    txtItogo.TabIndex = 11;
                     txtProductMassa.IsTabStop = true;
                     txtProductMassa.Focus();
                 }
@@ -531,7 +550,7 @@ namespace BuyProduct
 
         private void txtProductMassa_KeyDown(object sender, KeyEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"КатРасход,Цена1ед,*Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+            System.Diagnostics.Debug.WriteLine($"КатРасход,Цена1ед,*Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
 
             if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
             {
@@ -548,27 +567,23 @@ namespace BuyProduct
         private void txtProductSkidka_KeyDown(object sender, KeyEventArgs e)
         {
             
-            
-
             if (e.Key.Equals(Key.Enter)||(e.Key.Equals(Key.Tab)) )
             {
+
                 if (txtProductSkidka.Text.Equals("")) txtProductSkidka.Text = "0";
-                if (!txtProductPrice.Text.Equals(""))
+
+                if (!txtProductSkidka.Text.Equals("0"))
                 {
-                    AddShoping.productPrice = float.Parse(txtProductPrice.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-                } 
-                
-                AddShoping.productMassa = float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-                AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-
-               // AddShoping.ProductDiscont = (txtProductSkidka.Text == "") ? float.Parse(txtProductSkidka.Text) : { 0};
-
-                float tt = (AddShoping.productPrice * AddShoping.productMassa) - AddShoping.ProductDiscont;
-               
-
-
-                txtProductItogo.Text = String.Format("{0:0.##}",AddShoping.productRashod);
-                cmbShopName.Focus();
+                    float itogo = ((!txtItogo.Text.Equals("0"))||(!txtItogo.Text.Equals(""))) ? float.Parse(txtItogo.Text.Replace(",", "."), CultureInfo.InvariantCulture):0;
+                    float itogoSkidka = itogo - float.Parse(txtProductSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                    txtItogoSkidka.Text = String.Format("{0:0.##}", itogoSkidka);
+                    btnSaveDB.Focus();
+                }
+                else
+                {
+                    txtItogoSkidka.Text = txtItogo.Text;
+                }
+              
             }
             else if (e.Key.Equals(Key.OemComma))
             {
@@ -585,13 +600,50 @@ namespace BuyProduct
             string strproductName = cmbProductName.Text;
             string strProductCategoriaName = cmbCategoriaProduct.Text;
             string strproductDateTime = dtShop.ToString("dd.MM.yyyy");
-            float flproductPrice = float.Parse(txtProductPrice.Text.Replace(".", ","), CultureInfo.InvariantCulture); 
-            float flproductMassa = float.Parse(txtProductMassa.Text.Replace(".", ","), CultureInfo.InvariantCulture); ;
-            float flproductRashod = float.Parse(txtProductItogo.Text.Replace(".", ","), CultureInfo.InvariantCulture); ;
+
+            //IFormatProvider formatZPT = new NumberFormatInfo { NumberDecimalSeparator = "." };
+            ////string strproductPrice = txtProductPrice.Text.Replace(",", ".");
+            ////float flproductPrice = float.Parse(strproductPrice, formatZPT);
+            //string strProductPrice = float.Parse(txtProductPrice.Text.Replace(",", "."),formatZPT).ToString().Replace(",",".");
+
+
+            //float flproductMassa = float.Parse(txtProductMassa.Text.Replace(".", ","), CultureInfo.InvariantCulture);
+            //float flproductRashod = float.Parse(txtItogo.Text.Replace(".", ","), CultureInfo.InvariantCulture);
+            //string strShopName = cmbShopName.Text;
+            //float flProductDiscont = float.Parse(txtProductSkidka.Text.Replace(".", ","), CultureInfo.InvariantCulture); ;
+            //string strproductUnit = cmbProdUnit.Text;
+            //string strCategoriaShopping = cmbCatShop.Text;
+            //float flItogoskidka = float.Parse(txtItogoSkidka.Text.Replace(".", ","), CultureInfo.InvariantCulture);
+
+            //CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("en-US");
+            //string strproductName = cmbProductName.Text;
+            //string strProductCategoriaName = cmbCategoriaProduct.Text;
+            //string strproductDateTime = dtShop.ToString("dd.MM.yyyy");
+            //IFormatProvider formatZPT = new NumberFormatInfo { NumberDecimalSeparator = "." };
+            //float flproductPrice = float.Parse(txtProductPrice.Text.Replace(",", "."), formatZPT);
+            //string strProductPrice = flproductPrice.ToString();
+            //float flproductMassa = float.Parse(txtProductMassa.Text.Replace(",", "."), formatZPT);
+            //float flproductRashod = float.Parse(txtItogo.Text.Replace(",", "."), formatZPT);
+            //string strShopName = cmbShopName.Text;
+            //float flProductDiscont = float.Parse(txtProductSkidka.Text.Replace(",", "."), formatZPT); ;
+            //string strproductUnit = cmbProdUnit.Text;
+            //string strCategoriaShopping = cmbCatShop.Text;
+            //float flItogoskidka = float.Parse(txtItogoSkidka.Text.Replace(",", "."), formatZPT);
+
+
+            //сначала заменяем в строке  "," на ".", потом преобразуем его в float и после этого в string  и меняем запятую на точку
+            IFormatProvider formatZPT = new NumberFormatInfo { NumberDecimalSeparator = "." };
+            string strProductPrice = float.Parse(txtProductPrice.Text.Replace(",", "."), formatZPT).ToString().Replace(",", ".");
+            string strproductMassa = float.Parse(txtProductMassa.Text.Replace(",", "."), formatZPT).ToString().Replace(",", ".");
+            string strproductRashod = float.Parse(txtItogo.Text.Replace(",", "."), formatZPT).ToString().Replace(",", ".");
             string strShopName = cmbShopName.Text;
-            float flProductDiscont= float.Parse(txtProductSkidka.Text.Replace(".", ","), CultureInfo.InvariantCulture); ;
+            string strProductDiscont = float.Parse(txtProductSkidka.Text.Replace(",", "."), formatZPT).ToString().Replace(",", ".");
             string strproductUnit = cmbProdUnit.Text;
             string strCategoriaShopping = cmbCatShop.Text;
+            string strItogoskidka = float.Parse(txtItogoSkidka.Text.Replace(",", "."), formatZPT).ToString().Replace(",", ".");
+
+
+
 
 
             #region Записываем данные в БД
@@ -601,18 +653,19 @@ namespace BuyProduct
                 string sqlExpression;
                 SQLiteCommand command;
 
-                sqlExpression = "INSERT INTO  PriceShops(productName,ProductCategoriaName,productDateTime,productPrice,productMassa,productRashod,ShopName,ProductDiscont,productUnit,CategoriaShopping) " +
+                sqlExpression = "INSERT INTO  PriceShops(productName,ProductCategoriaName,productDateTime,productPrice,productMassa,productRashod,ShopName,ProductDiscont,productUnit,CategoriaShopping,ItogoSkigka) " +
                     "VALUES ('" +
                     strproductName + "','" +
                     strProductCategoriaName + "','" +
                     strproductDateTime + "'," +
-                    flproductPrice + "," +
-                    flproductMassa + "," +
-                    flproductRashod + ",'" +
+                    strProductPrice + "," +
+                    strproductMassa + "," +
+                    strproductRashod + ",'" +
                     strShopName + "'," +
-                    flProductDiscont + ",'" +
+                    strProductDiscont + ",'" +
                     strproductUnit + "','" +
-                    strCategoriaShopping + "'" +
+                    strCategoriaShopping + "','" +
+                    strItogoskidka + "'" +
                     ")";
                 command = new SQLiteCommand(sqlExpression, connection);
 
@@ -626,28 +679,32 @@ namespace BuyProduct
                     cmbCategoriaProduct.Text = "";
                     txtProductPrice.Text = "";
                     txtProductMassa.Text = "";
-                    txtProductItogo.Text = "";
+                    txtItogo.Text = "";
                     txtProductSkidka.Text = "";
                     cmbProdUnit.Text = "";
+                    txtItogoSkidka.Text = "";
 
                     dtShoping.TabIndex = 1;
-                    cmbCategoriaProduct.TabIndex = 2;
-                    cmbProductName.TabIndex = 3;
-                    cmbCatShop.TabIndex = 4;
-                    txtProductPrice.TabIndex = 5;
-                    txtProductMassa.TabIndex = 6;
-                    cmbProdUnit.TabIndex = 7;
-                    txtProductSkidka.TabIndex = 8;
-                    txtProductItogo.IsTabStop = false;
-                    cmbShopName.TabIndex = 9;
+                    cmbShopName.TabIndex = 2;
+                    cmbCategoriaProduct.TabIndex = 3;
+                    cmbProductName.TabIndex = 4;
+                    cmbCatShop.TabIndex = 5;
+                    txtProductPrice.TabIndex = 6;
+                    txtProductMassa.TabIndex = 7;
+                    cmbProdUnit.TabIndex = 8;
+                    txtProductSkidka.TabIndex = 9;
+                    txtItogo.IsTabStop = false;
+                    
                     btnSaveDB.TabIndex = 10;
-                    txtProductItogo.TabIndex = 11;
+                    txtItogo.TabIndex = 11;
                     txtProductPrice.IsEnabled = true;
                     txtProductPrice.IsTabStop = true;
-                    txtProductItogo.IsTabStop = false;
-                    txtProductItogo.IsEnabled = false;
+                    txtItogo.IsTabStop = false;
+                    txtItogo.IsEnabled = false;
+                    txtItogoSkidka.IsTabStop = false;
+                    txtItogoSkidka.IsEnabled = false;
 
-                    System.Diagnostics.Debug.WriteLine($"Сброс-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+                    System.Diagnostics.Debug.WriteLine($"Сброс-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
 
 
                 }
@@ -666,7 +723,7 @@ namespace BuyProduct
             #region событие при нажатии на Enter или Tab
             string txtProductName = cmbProductName.Text;
             
-            System.Diagnostics.Debug.WriteLine($"Подкласс продукта-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtProductItogo.TabIndex}");
+            System.Diagnostics.Debug.WriteLine($"Подкласс продукта-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
 
             if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
             {
@@ -785,33 +842,34 @@ namespace BuyProduct
         private void txtProductItogo_GotFocus(object sender, RoutedEventArgs e)
         {
             //setKLName("00000419");
-            txtProductItogo.SelectionStart = 0;
-            txtProductItogo.SelectionLength = txtProductItogo.Text.Length;
+            txtItogo.SelectionStart = 0;
+            txtItogo.SelectionLength = txtItogo.Text.Length;
         }
 
         private void txtProductItogo_KeyDown(object sender, KeyEventArgs e)
         {
+            
+
             if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
             {
-                if (txtProductSkidka.Text.Equals("")) txtProductSkidka.Text = "0";
-                
-                AddShoping.productMassa = float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-                AddShoping.ProductDiscont = float.Parse(txtProductSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-                float flItogo = float.Parse(txtProductItogo.Text.Replace(",", "."), CultureInfo.InvariantCulture);
-                // AddShoping.ProductDiscont = (txtProductSkidka.Text == "") ? float.Parse(txtProductSkidka.Text) : { 0};
+                if (txtItogo.Text.Equals("")) txtItogo.Text = "0";
+                if ((!txtProductMassa.Text.Equals("0")) || (!txtItogo.Text.Equals("0")))
+                {
+                   float flMassa = float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                   float flItogo = float.Parse(txtItogo.Text.Replace(",", "."), CultureInfo.InvariantCulture);
+                    
+                    float Prod1ed = (flItogo) / flMassa;
 
-                float tt = (flItogo/AddShoping.productMassa) - AddShoping.ProductDiscont;
+                    txtProductPrice.Text = String.Format("{0:0.##}", Prod1ed);
+                }
 
-                AddShoping.productPrice = tt;
 
 
-                txtProductPrice.Text = String.Format("{0:0.##}", AddShoping.productPrice);
-
-                //txtProductPrice.IsEnabled = true;
-                //txtProductPrice.IsTabStop = false;
-                //txtProductItogo.IsTabStop = true;
-                //txtProductItogo.IsEnabled = false;
-                cmbShopName.Focus();
+                //    //txtProductPrice.IsEnabled = true;
+                //    //txtProductPrice.IsTabStop = false;
+                //    //txtProductItogo.IsTabStop = true;
+                //    //txtProductItogo.IsEnabled = false;
+                //    cmbShopName.Focus();
 
 
             }
@@ -845,5 +903,98 @@ namespace BuyProduct
                 if (elementWithFocus.MoveFocus(request)) e.Handled = true;
             }
         }
+
+
+        private void BtnSave2DB_Click(object sender, RoutedEventArgs e)
+        {
+            dtShop = (DateTime)dtShoping.SelectedDate;
+            string strdtShop;
+
+               
+            #region Записываем данные в БД
+            using (var connection = new SQLiteConnection("Data Source = product.db"))
+            {
+                connection.Open();
+                string sqlExpression;
+                SQLiteCommand command;
+
+                sqlExpression = "INSERT INTO  PriceShops(productName,ProductCategoriaName,productDateTime,productPrice,productMassa,productRashod,ShopName,ProductDiscont,productUnit,CategoriaShopping,ItogoSkigka) " +
+                    "VALUES (@strproductName,@strProductCategoriaName,@strproductDateTime,@strProductPrice,@strproductMassa,@strproductRashod,@strShopName,@strProductDiscont,@strproductUnit,@strCategoriaShopping,@strItogoskidka)";
+                command = new SQLiteCommand(sqlExpression, connection);
+
+                SQLiteParameter productName = new SQLiteParameter("@strproductName", cmbProductName.Text);
+                command.Parameters.Add(productName);
+                SQLiteParameter ProductCategoriaName = new SQLiteParameter("@strProductCategoriaName", cmbCategoriaProduct.Text);
+                command.Parameters.Add(ProductCategoriaName);
+                SQLiteParameter productDateTime = new SQLiteParameter("@strproductDateTime", dtShop.ToString("dd.MM.yyyy"));
+                command.Parameters.Add(productDateTime);
+                SQLiteParameter ProductPrice = new SQLiteParameter("@strProductPrice", float.Parse(txtProductPrice.Text.Replace(",", "."), CultureInfo.InvariantCulture));
+                command.Parameters.Add(ProductPrice);
+                SQLiteParameter productMassa = new SQLiteParameter("@strproductMassa", float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture));
+                command.Parameters.Add(productMassa);
+                SQLiteParameter productRashod = new SQLiteParameter("@strproductRashod", float.Parse(txtItogo.Text.Replace(",", "."), CultureInfo.InvariantCulture));
+                command.Parameters.Add(productRashod);
+                SQLiteParameter ShopName = new SQLiteParameter("@strShopName", cmbShopName.Text);
+                command.Parameters.Add(ShopName);
+                SQLiteParameter ProductDiscont = new SQLiteParameter("@strProductDiscont", float.Parse(txtProductSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture));
+                command.Parameters.Add(ProductDiscont);
+                SQLiteParameter productUnit = new SQLiteParameter("@strproductUnit", cmbProdUnit.Text);
+                command.Parameters.Add(productUnit);
+                SQLiteParameter CategoriaShopping = new SQLiteParameter("@strCategoriaShopping", cmbCatShop.Text);
+                command.Parameters.Add(CategoriaShopping);
+                SQLiteParameter Itogoskidka = new SQLiteParameter("@strItogoskidka", float.Parse(txtItogoSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture));
+                command.Parameters.Add(Itogoskidka);
+
+                
+
+                int result = command.ExecuteNonQuery();
+
+                if (!result.Equals(0))
+                {
+                    //txtProductName.Text = ""; 
+                    cmbProductName.Text = "";
+
+                    cmbCategoriaProduct.Text = "";
+                    txtProductPrice.Text = "";
+                    txtProductMassa.Text = "";
+                    txtItogo.Text = "";
+                    txtProductSkidka.Text = "";
+                    cmbProdUnit.Text = "";
+                    txtItogoSkidka.Text = "";
+
+                    dtShoping.TabIndex = 1;
+                    cmbShopName.TabIndex = 2;
+                    cmbCategoriaProduct.TabIndex = 3;
+                    cmbProductName.TabIndex = 4;
+                    cmbCatShop.TabIndex = 5;
+                    txtProductPrice.TabIndex = 6;
+                    txtProductMassa.TabIndex = 7;
+                    cmbProdUnit.TabIndex = 8;
+                    txtProductSkidka.TabIndex = 9;
+                    txtItogo.IsTabStop = false;
+
+                    btnSaveDB.TabIndex = 10;
+                    txtItogo.TabIndex = 11;
+                    txtProductPrice.IsEnabled = true;
+                    txtProductPrice.IsTabStop = true;
+                    txtItogo.IsTabStop = false;
+                    txtItogo.IsEnabled = false;
+                    txtItogoSkidka.IsTabStop = false;
+                    txtItogoSkidka.IsEnabled = false;
+
+                    System.Diagnostics.Debug.WriteLine($"Сброс-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
+
+
+                }
+
+                connection.Close();
+
+            }
+
+            #endregion
+
+            LoadComboBox();
+        }
+
     }
 }
