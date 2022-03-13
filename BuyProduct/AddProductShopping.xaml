@@ -32,7 +32,7 @@
         <DatePicker Name="dtShoping" HorizontalAlignment="Left" VerticalAlignment="Center"  Grid.Column="2" Grid.Row="0" TabIndex="1"/>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Text="Магазин"/>
-        <ComboBox Name="cmbShopName" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" KeyDown="cmbShopName_KeyDown" TabIndex="2" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+        <ComboBox Name="cmbShopName" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="1" GotFocus="cmbShopName_GotFocus" KeyDown="cmbShopName_KeyDown" TabIndex="2" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
 
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Text="Класс продукта"/>
@@ -54,14 +54,14 @@
         </TextBox>
         
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="7" Text="Ед измерения"/>
-        <ComboBox Name="cmbProdUnit" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" KeyDown="cmbProdUnit_KeyDown" TabIndex="8" />
+        <ComboBox Name="cmbProdUnit" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="7" KeyDown="cmbProdUnit_KeyDown" PreviewTextInput="cmbProdUnit_PreviewTextInput" TabIndex="8" />
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="8" Text="Итого за товар"/>
         <TextBox Name="txtItogo" IsEnabled="True" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="8" Text="Итого (Заполняется автоматически)" IsTabStop="False" GotFocus="txtProductItogo_GotFocus" KeyDown="txtProductItogo_KeyDown" PreviewKeyDown="txt_PreviewKeyDown"></TextBox>
 
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="9" Text="Скидка"/>
-        <TextBox Name="txtProductSkidka"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="9" Text="" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductSkidka_KeyDown" TabIndex="10"></TextBox>
+        <TextBox Name="txtProductSkidka"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="9" Text="" GotFocus="txt_GotFocus" PreviewTextInput="txtProductSkidka_PreviewTextInput"  KeyDown="txtProductSkidka_KeyDown" TabIndex="10"></TextBox>
         
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10" Text="Итого (со скидкой)"/>
         <TextBox Name="txtItogoSkidka" IsEnabled="True" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="10" Text="Итого со скидкой(Заполняется автоматически)" IsTabStop="False"></TextBox>

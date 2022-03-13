@@ -566,15 +566,15 @@ namespace BuyProduct
 
         private void txtProductSkidka_KeyDown(object sender, KeyEventArgs e)
         {
-            
-            if (e.Key.Equals(Key.Enter)||(e.Key.Equals(Key.Tab)) )
+
+            if (e.Key.Equals(Key.Enter) || (e.Key.Equals(Key.Tab)))
             {
 
                 if (txtProductSkidka.Text.Equals("")) txtProductSkidka.Text = "0";
 
                 if (!txtProductSkidka.Text.Equals("0"))
                 {
-                    float itogo = ((!txtItogo.Text.Equals("0"))||(!txtItogo.Text.Equals(""))) ? float.Parse(txtItogo.Text.Replace(",", "."), CultureInfo.InvariantCulture):0;
+                    float itogo = ((!txtItogo.Text.Equals("0")) || (!txtItogo.Text.Equals(""))) ? float.Parse(txtItogo.Text.Replace(",", "."), CultureInfo.InvariantCulture) : 0;
                     float itogoSkidka = itogo - float.Parse(txtProductSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture);
                     txtItogoSkidka.Text = String.Format("{0:0.##}", itogoSkidka);
                     btnSaveDB.Focus();
@@ -583,12 +583,10 @@ namespace BuyProduct
                 {
                     txtItogoSkidka.Text = txtItogo.Text;
                 }
-              
+
             }
-            else if (e.Key.Equals(Key.OemComma))
-            {
-                e.Handled = true;
-            }
+            else if (e.Key == Key.Space) e.Handled = true; //если пробел то не учитываем
+            else if (e.Key.Equals(Key.OemComma)) e.Handled = true; //если точка то не учитываем
         }
 
 
@@ -994,6 +992,34 @@ namespace BuyProduct
             #endregion
 
             LoadComboBox();
+        }
+
+        private void cmbProdUnit_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            string Value;
+            int iVal;
+
+            if (Int32.TryParse(e.Text,out iVal))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void cmbShopName_GotFocus(object sender, RoutedEventArgs e)
+        {
+            setKLName("00000419"); //Автоматическое переключение на Рус
+        }
+
+       
+
+        private void txtProductSkidka_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            //Ввод только чисел
+            int val;
+            if (!Int32.TryParse(e.Text,out val))
+            {
+                e.Handled = true; //отклоняем ввод если не число
+            }
         }
 
     }
