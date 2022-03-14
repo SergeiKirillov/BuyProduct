@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:BuyProduct"
         mc:Ignorable="d"
         Title="Просмотр данных за выбранную дату с фильтрацией по классу(категории)" Height="450" Width="800">
-    <Grid>
-        <DataGrid x:Name="dgViewClass"></DataGrid>
-        <Label></Label>
-        <DataGrid x:Name="dgViewProduct"></DataGrid>
-    </Grid>
+    <StackPanel>
+        <ComboBox x:Name="cmbViewCat" Width="300" Height="20"/>
+        <DataGrid x:Name="dgViewClass"  Width="750" Height="100" Margin="5"></DataGrid>
+        <Label Name="lblView" Margin="100 5 100 5" HorizontalAlignment="Center">Cписок покупок</Label>
+        <DataGrid x:Name="dgViewProduct" Width="750" Height="200"></DataGrid>
+    </StackPanel>
 </Window>
