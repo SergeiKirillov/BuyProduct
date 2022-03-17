@@ -755,7 +755,7 @@ namespace BuyProduct
 
                 #region Подкласс продуктов 
                 
-                sqlExpression = "select productName,ProductCategoriaName from ProductNames where ProductCategoriaName='" + cmbCategoriaProduct.Text + "' order by productName asc";
+                sqlExpression = "select productName,ProductCategoriaName,ProductUnit from ProductNames where ProductCategoriaName='" + cmbCategoriaProduct.Text + "' order by productName asc";
                     
                 
                 command = new SQLiteCommand(sqlExpression, connection);
@@ -770,7 +770,7 @@ namespace BuyProduct
                         {
                             cmbProductName.Items.Add(reader.GetString(0));
                             cmbProductName.Text = cmbProductName.Items[0].ToString();
-
+                            cmbProdUnit.Text = reader.GetString(2);
                         }
 
                         
@@ -784,6 +784,23 @@ namespace BuyProduct
                 connection.Close();
 
             }
+
+            #endregion
+
+            #region Меняем название полей
+
+            if (cmbCategoriaProduct.Text=="Бензин")
+            {
+
+               // txtBlCount.Text = "";
+               // txtBlPrice1.Text = "";
+            }
+            else
+            {
+               // txtBlCount.Text = "";
+               // txtBlPrice1.Text = "";
+            }
+
 
             #endregion
         }

@@ -45,10 +45,10 @@
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" Text="Категория расходов"/>
         <ComboBox Name="cmbCatShop" Width="230" IsEditable="True" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="4" KeyDown="cmbCatShop_KeyDown" GotFocus="cmbCatShop_GotFocus" TabIndex="5" LostFocus="cmbCatShop_LostFocus"/>
         
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" Text="Цена за единицу"/>
+        <TextBlock x:Name="txtBlPrice1" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5" Text="Цена за единицу"/>
         <TextBox Name="txtProductPrice"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="5" Text="" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductPrice_KeyDown" TabIndex="6" ></TextBox>
         
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" Text="Количество"/>
+        <TextBlock x:Name="txtBlCount" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="6" Text="Количество"/>
         <TextBox Name="txtProductMassa"  Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="6" GotFocus="txt_GotFocus" PreviewKeyDown="txt_PreviewKeyDown" KeyDown="txtProductMassa_KeyDown" TabIndex="7">
             
         </TextBox>
