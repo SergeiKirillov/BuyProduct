@@ -26,7 +26,75 @@ namespace BuyProduct
             InitializeComponent();
             //начало просмотра данныъ
             view1();
-            view2();
+            ViewCatShop();
+            ViewCatName();
+            viewProductName();
+        }
+
+        private void ViewCatName()
+        {
+            using (var connection = new SQLiteConnection("Data Source = product.db"))
+            {
+                connection.Open();
+                DataTable dTable = new DataTable();
+                string sqlQuery = "select DISTINCT ProductCategoriaName from ProductNames order by ProductCategoriaName";
+
+                if (connection.State != ConnectionState.Open)
+                {
+                    System.Diagnostics.Debug.WriteLine("База не найдена!!");
+                    return;
+                }
+
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
+                adapter.Fill(dTable);
+
+                if (dTable.Rows.Count > 0)
+                {
+                    dgViewClass.ItemsSource = dTable.DefaultView;
+                    //dgViewClass.ItemsSource = dTable.AsDataView();
+                    cmbViewCatName.ItemsSource = dTable.DefaultView;
+                    cmbViewCatName.DisplayMemberPath = "ProductCategoriaName";
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("В таблице нету данных для просмотра");
+                }
+
+
+            }
+        }
+
+        private void ViewCatShop()
+        {
+            using (var connection = new SQLiteConnection("Data Source = product.db"))
+            {
+                connection.Open();
+                DataTable dTable = new DataTable();
+                string sqlQuery = "select DISTINCT CategoriaShopping from ProductNames order by CategoriaShopping";
+
+                if (connection.State != ConnectionState.Open)
+                {
+                    System.Diagnostics.Debug.WriteLine("База не найдена!!");
+                    return;
+                }
+
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
+                adapter.Fill(dTable);
+
+                if (dTable.Rows.Count > 0)
+                {
+                    dgViewClass.ItemsSource = dTable.DefaultView;
+                    //dgViewClass.ItemsSource = dTable.AsDataView();
+                    cmbViewCatShop.ItemsSource = dTable.DefaultView;
+                    cmbViewCatShop.DisplayMemberPath = "CategoriaShopping";
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("В таблице нету данных для просмотра");
+                }
+
+
+            }
         }
 
         private void view1()
@@ -60,13 +128,13 @@ namespace BuyProduct
 
             }
         }
-        private void view2()
+        private void viewProductName()
         {
             using (var connection = new SQLiteConnection("Data Source = product.db"))
             {
                 connection.Open();
                 DataTable dTable = new DataTable();
-                string sqlQuery= "select DISTINCT ProductCategoriaName from ProductNames order by ProductCategoriaName";
+                string sqlQuery= "select DISTINCT productName from ProductNames order by productName";
 
                 if (connection.State!=ConnectionState.Open)
                 {
@@ -81,8 +149,8 @@ namespace BuyProduct
                 {
                     dgViewClass.ItemsSource = dTable.DefaultView;
                     //dgViewClass.ItemsSource = dTable.AsDataView();
-                    cmbViewCat.ItemsSource = dTable.DefaultView;
-                    cmbViewCat.DisplayMemberPath = "ProductCategoriaName";
+                    cmbViewProductName.ItemsSource = dTable.DefaultView;
+                    cmbViewProductName.DisplayMemberPath = "productName";
                 }
                 else
                 {

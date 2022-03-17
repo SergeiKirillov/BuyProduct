@@ -254,32 +254,41 @@ namespace BuyProduct
 
                 #region Сохраняем В БД  ProductNames
 
-                using (var connection = new SQLiteConnection("Data Source = product.db"))
+                if (!cmbProductName.Items.Contains(cmbProductName.Text))
                 {
-                    connection.Open();
-                    string sqlExpression;
-                    SQLiteCommand command;
+                    cmbProductName.Items.Add(cmbProductName.Text);
 
-                    sqlExpression = "select productName from ProductNames where productName='" + txtProductName + "'";
-                    command = new SQLiteCommand(sqlExpression, connection);
-
-                    using (SQLiteDataReader reader = command.ExecuteReader())
+                    using (var connection = new SQLiteConnection("Data Source = product.db"))
                     {
-                        if (!reader.HasRows)
+                        connection.Open();
+                        string sqlExpression;
+                        SQLiteCommand command;
+
+                        sqlExpression = "select productName from ProductNames where productName='" + cmbProductName.Text + "'";
+                        command = new SQLiteCommand(sqlExpression, connection);
+
+                        using (SQLiteDataReader reader = command.ExecuteReader())
                         {
-                            sqlExpression = "INSERT INTO  ProductNames(productName,ProductCategoriaName,CategoriaShopping) VALUES ('" + txtProductName + "','" + cmbCategoriaProduct.Text + "','" + txtCatShop + "')";
-                            command = new SQLiteCommand(sqlExpression, connection);
+                            if (!reader.HasRows)
+                            {
+                                sqlExpression = "INSERT INTO  ProductNames(productName,ProductCategoriaName,CategoriaShopping,ProductUnit) VALUES ('" + cmbProductName.Text + "','" + cmbCategoriaProduct.Text + "','" + cmbCatShop.Text + "','"+ cmbProdUnit.Text + "')";
+                                command = new SQLiteCommand(sqlExpression, connection);
 
-                            int result = command.ExecuteNonQuery();
+                                int result = command.ExecuteNonQuery();
 
+
+                            }
 
                         }
 
+                        connection.Close();
+
                     }
 
-                    connection.Close();
-
                 }
+
+
+               
 
                 #endregion
                
@@ -725,12 +734,7 @@ namespace BuyProduct
 
             if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
             {
-                if (!cmbProductName.Items.Contains(txtProductName))
-                {
-                    cmbProductName.Items.Add(txtProductName);
-
-
-                }
+                
 
                 //cmbCatShop.Focus();
                 MoveToNextElement(e);
