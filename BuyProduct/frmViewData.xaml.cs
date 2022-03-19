@@ -26,6 +26,7 @@ namespace BuyProduct
             InitializeComponent();
             //начало просмотра данныъ
             view1();
+            view2();
             ViewCatShop();
             ViewCatName();
             viewProductName();
@@ -50,7 +51,7 @@ namespace BuyProduct
 
                 if (dTable.Rows.Count > 0)
                 {
-                    dgViewClass.ItemsSource = dTable.DefaultView;
+                    //dgViewClass.ItemsSource = dTable.DefaultView;
                     //dgViewClass.ItemsSource = dTable.AsDataView();
                     cmbViewCatName.ItemsSource = dTable.DefaultView;
                     cmbViewCatName.DisplayMemberPath = "ProductCategoriaName";
@@ -81,6 +82,8 @@ namespace BuyProduct
                 SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
                 adapter.Fill(dTable);
 
+                
+
                 if (dTable.Rows.Count > 0)
                 {
                     dgViewClass.ItemsSource = dTable.DefaultView;
@@ -95,6 +98,41 @@ namespace BuyProduct
 
 
             }
+        }
+
+        private void viewProductName()
+        {
+            using (var connection = new SQLiteConnection("Data Source = product.db"))
+            {
+                connection.Open();
+                DataTable dTable = new DataTable();
+                string sqlQuery = "select DISTINCT productName from ProductNames order by productName";
+
+                if (connection.State != ConnectionState.Open)
+                {
+                    System.Diagnostics.Debug.WriteLine("База не найдена!!");
+                    return;
+                }
+
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
+                adapter.Fill(dTable);
+
+                if (dTable.Rows.Count > 0)
+                {
+                    dgViewClass.ItemsSource = dTable.DefaultView;
+                    //dgViewClass.ItemsSource = dTable.AsDataView();
+                    cmbViewProductName.ItemsSource = dTable.DefaultView;
+                    cmbViewProductName.DisplayMemberPath = "productName";
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("В таблице нету данных для просмотра");
+                }
+
+
+            }
+
+
         }
 
         private void view1()
@@ -128,39 +166,59 @@ namespace BuyProduct
 
             }
         }
-        private void viewProductName()
+
+        private void view2()
         {
             using (var connection = new SQLiteConnection("Data Source = product.db"))
             {
                 connection.Open();
-                DataTable dTable = new DataTable();
-                string sqlQuery= "select DISTINCT productName from ProductNames order by productName";
+                DataSet dSet = new DataSet();
+                string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productRashod from PriceShops order by productDateTime ASC";
 
-                if (connection.State!=ConnectionState.Open)
+                if (connection.State != ConnectionState.Open)
                 {
                     System.Diagnostics.Debug.WriteLine("База не найдена!!");
                     return;
                 }
 
                 SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
-                adapter.Fill(dTable);
+                adapter.Fill(dSet, "PriceShops");
 
-                if (dTable.Rows.Count>0)
-                {
-                    dgViewClass.ItemsSource = dTable.DefaultView;
-                    //dgViewClass.ItemsSource = dTable.AsDataView();
-                    cmbViewProductName.ItemsSource = dTable.DefaultView;
-                    cmbViewProductName.DisplayMemberPath = "productName";
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine("В таблице нету данных для просмотра");
-                }
+                dSet.Tables[0].DefaultView.RowFilter = "productName='1 категория'";
+                
+                
+
+                //DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
+
+                //DataView dv = new DataView(dSet.Tables["PriceShops"]);
+                //dv.Sort = "productDateTime,ProductCategoriaName";
+                //dgViewClass.ItemsSource = dv;
+
+                //dv.Sort = "productDateTime ASC";
+
+                //dgViewClass.ItemsSource = dv;
+
+                //dv.RowFilter = "productName='1 категория'";
+                //dgViewClass.ItemsSource = dv;
+
+
+
+
+
+                //if (dTable.Rows.Count > 0)
+                //{
+                //    dgViewProduct.ItemsSource = dTable.DefaultView;
+                //    //dgViewClass.ItemsSource = dTable.AsDataView();
+
+                //}
+                //else
+                //{
+                //    System.Diagnostics.Debug.WriteLine("В таблице нету данных для просмотра");
+                //}
 
 
             }
-   
-            
         }
+
     }
 }

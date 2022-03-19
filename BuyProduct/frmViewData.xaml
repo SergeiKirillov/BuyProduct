@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BuyProduct"
         mc:Ignorable="d"
-        Title="Просмотр данных за выбранную дату с фильтрацией по классу(категории)" Height="450" Width="1500">
+        Title="Просмотр данных за выбранную дату с фильтрацией по классу(категории)" Height="450" Width="1300">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal" Height="25">
             <DatePicker Width="150" Margin="10 0 5 0"  />
             <DatePicker Width="150" Margin="10 0 5 0"  />
             
-            <ComboBox x:Name="cmbViewCatShop" Width="150" Margin="10 0 5 0" />
+            <ComboBox x:Name="cmbViewCatShop" Width="150" Margin="10 0 5 0"  />
             <ComboBox x:Name="cmbViewCatName" Width="300" Margin="10 0 5 0" />
             <ComboBox x:Name="cmbViewProductName" Width="450" Margin="10 0 5 0" />
         </StackPanel>
