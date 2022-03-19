@@ -86,7 +86,7 @@ namespace BuyProduct
 
                 if (dTable.Rows.Count > 0)
                 {
-                    dgViewClass.ItemsSource = dTable.DefaultView;
+                    //dgViewClass.ItemsSource = dTable.DefaultView;
                     //dgViewClass.ItemsSource = dTable.AsDataView();
                     cmbViewCatShop.ItemsSource = dTable.DefaultView;
                     cmbViewCatShop.DisplayMemberPath = "CategoriaShopping";
@@ -119,7 +119,7 @@ namespace BuyProduct
 
                 if (dTable.Rows.Count > 0)
                 {
-                    dgViewClass.ItemsSource = dTable.DefaultView;
+                    //dgViewClass.ItemsSource = dTable.DefaultView;
                     //dgViewClass.ItemsSource = dTable.AsDataView();
                     cmbViewProductName.ItemsSource = dTable.DefaultView;
                     cmbViewProductName.DisplayMemberPath = "productName";
@@ -184,19 +184,26 @@ namespace BuyProduct
                 SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
                 adapter.Fill(dSet, "PriceShops");
 
-                dSet.Tables[0].DefaultView.RowFilter = "productName='1 категория'";
-                
-                
+                //dSet.Tables[0].DefaultView.RowFilter = "productName='1 категория'";
+
+
 
                 //DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
 
                 //DataView dv = new DataView(dSet.Tables["PriceShops"]);
                 //dv.Sort = "productDateTime,ProductCategoriaName";
-                //dgViewClass.ItemsSource = dv;
+
 
                 //dv.Sort = "productDateTime ASC";
+                #region 3
+                DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
+                DataView dv = new DataView(dataTable);
+                dv.RowFilter = "productName='1 категория'";
 
-                //dgViewClass.ItemsSource = dv;
+                #endregion
+
+                dgViewClass.ItemsSource = dv;
+                dgViewClass.Items.Refresh();
 
                 //dv.RowFilter = "productName='1 категория'";
                 //dgViewClass.ItemsSource = dv;
