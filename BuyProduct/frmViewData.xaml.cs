@@ -29,7 +29,7 @@ namespace BuyProduct
             InitializeComponent();
             //начало просмотра данныъ
             //view1();
-            view2();
+            view2("");
             ViewCatShop();
             ViewCatName("");
             viewProductName("");
@@ -179,7 +179,7 @@ namespace BuyProduct
             {
                 connection.Open();
                 DataTable dTable = new DataTable();
-                string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productRashod from PriceShops order by productDateTime ASC";
+                string sqlQuery = "select date(productDateTime) as dtProduct, ProductCategoriaName, productName, productRashod from PriceShops order by dtProduct ASC";
 
                 if (connection.State != ConnectionState.Open)
                 {
@@ -205,13 +205,14 @@ namespace BuyProduct
             }
         }
 
-        private void view2()
+        private void view2(string SortID)
         {
             using (var connection = new SQLiteConnection("Data Source = product.db"))
             {
                 connection.Open();
                 DataSet dSet = new DataSet();
-                string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by productDateTime ASC";
+                //select substr(productDateTime,7,4)|| "-" || substr(productDateTime, 4, 2) || "-" || substr(productDateTime, 1, 2) as date1, productName from PriceShops order by date1 DESC
+                string sqlQuery = "select substr(productDateTime,7,4)|| ' - ' || substr(productDateTime, 4, 2) || ' - ' || substr(productDateTime, 1, 2) as date1, CategoriaShopping, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by date1 ASC";
 
                 if (connection.State != ConnectionState.Open)
                 {
@@ -222,21 +223,15 @@ namespace BuyProduct
                 SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
                 adapter.Fill(dSet, "PriceShops");
 
-                //dSet.Tables[0].DefaultView.RowFilter = "productName='1 категория'";
-
-
-
-                //DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
-
-                //DataView dv = new DataView(dSet.Tables["PriceShops"]);
-                //dv.Sort = "productDateTime,ProductCategoriaName";
-
-
-                //dv.Sort = "productDateTime ASC";
                 #region 3
                 DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
                 DataView dv = new DataView(dataTable);
-                dv.RowFilter = "productName='1 категория'";
+                if(SortID!="")
+                {
+                    //dv.RowFilter = "productName='1 категория'";
+                    dv.RowFilter = SortID;
+                }
+
 
                 #endregion
 
@@ -258,49 +253,7 @@ namespace BuyProduct
             if (cmbViewCatShop.Text != "")
             {
                 #region Заполняем таблицу при выборк группы продуктов 
-                using (var connection = new SQLiteConnection("Data Source = product.db"))
-                {
-                    connection.Open();
-                    DataSet dSet = new DataSet();
-                    string sqlQuery = "select productDateTime, ProductCategoriaName, CategoriaShopping, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by productDateTime ASC";
-
-                    if (connection.State != ConnectionState.Open)
-                    {
-                        System.Diagnostics.Debug.WriteLine("База не найдена!!");
-                        return;
-                    }
-
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
-                    adapter.Fill(dSet, "PriceShops");
-
-                    //dSet.Tables[0].DefaultView.RowFilter = "productName='1 категория'";
-
-
-
-                    //DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
-
-                    //DataView dv = new DataView(dSet.Tables["PriceShops"]);
-                    //dv.Sort = "productDateTime,ProductCategoriaName";
-
-
-                    //dv.Sort = "productDateTime ASC";
-                    #region 3
-                    DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
-                    DataView dv = new DataView(dataTable);
-
-                    //ComboBoxItem cb1 = (ComboBoxItem)cmbViewCatShop.SelectedItem;
-                    //string Val = cb1.Content.ToString();
-
-                    string query = "CategoriaShopping='" + cmbViewCatShop.Text + "'";
-                    dv.RowFilter = query;
-
-                    #endregion
-
-                    dgViewClass.ItemsSource = dv;
-                    dgViewClass.Items.Refresh();
-
-
-                }
+                view2("CategoriaShopping='" + cmbViewCatShop.Text + "'");
                 #endregion
 
 
@@ -318,35 +271,7 @@ namespace BuyProduct
             if (cmbViewCatName.Text != "")
             {
                 #region Заполняем таблицу при выборк группы продуктов 
-                using (var connection = new SQLiteConnection("Data Source = product.db"))
-                {
-                    connection.Open();
-                    DataSet dSet = new DataSet();
-                    string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by productDateTime ASC";
-
-                    if (connection.State != ConnectionState.Open)
-                    {
-                        System.Diagnostics.Debug.WriteLine("База не найдена!!");
-                        return;
-                    }
-
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
-                    adapter.Fill(dSet, "PriceShops");
-
-                    #region 3
-                    DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
-                    DataView dv = new DataView(dataTable);
-
-                    string query = "ProductCategoriaName='" + cmbViewCatName.Text + "'";
-                    dv.RowFilter = query;
-
-                    #endregion
-
-                    dgViewClass.ItemsSource = dv;
-                    dgViewClass.Items.Refresh();
-
-
-                }
+                view2("ProductCategoriaName='" + cmbViewCatName.Text + "'");
                 #endregion
 
 
@@ -361,37 +286,7 @@ namespace BuyProduct
 
         private void cmbViewProductName_LostFocus(object sender, RoutedEventArgs e)
         {
-            #region Заполняем таблицу продуктов 
-            using (var connection = new SQLiteConnection("Data Source = product.db"))
-            {
-                connection.Open();
-                DataSet dSet = new DataSet();
-                string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by productDateTime ASC";
-
-                if (connection.State != ConnectionState.Open)
-                {
-                    System.Diagnostics.Debug.WriteLine("База не найдена!!");
-                    return;
-                }
-
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
-                adapter.Fill(dSet, "PriceShops");
-
-                #region 3
-                DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
-                DataView dv = new DataView(dataTable);
-
-                string query = "productName='" + cmbViewProductName.Text + "'";
-                dv.RowFilter = query;
-
-                #endregion
-
-                dgViewClass.ItemsSource = dv;
-                dgViewClass.Items.Refresh();
-
-
-            }
-            #endregion
+            view2("productName='" + cmbViewProductName.Text + "'");
         }
     }
 }
