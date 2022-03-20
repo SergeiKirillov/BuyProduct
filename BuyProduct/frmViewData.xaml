@@ -10,14 +10,15 @@
         <StackPanel Orientation="Horizontal" Height="25">
             <DatePicker Width="150" Margin="10 0 5 0"  />
             <DatePicker Width="150" Margin="10 0 5 0"  />
-            
-            <ComboBox x:Name="cmbViewCatShop" Width="150" Margin="10 0 5 0"  />
-            <ComboBox x:Name="cmbViewCatName" Width="300" Margin="10 0 5 0" />
-            <ComboBox x:Name="cmbViewProductName" Width="450" Margin="10 0 5 0" />
+
+            <ComboBox x:Name="cmbViewCatShop" IsEditable="True" Width="150" Margin="10 0 5 0" LostFocus="cmbViewCatShop_LostFocus"/>
+            <ComboBox x:Name="cmbViewCatName" IsEditable="True" Width="300" Margin="10 0 5 0" LostFocus="cmbViewCatName_LostFocus"/>
+            <ComboBox x:Name="cmbViewProductName" IsEditable="True" Width="450" Margin="10 0 5 0" LostFocus="cmbViewProductName_LostFocus" />
         </StackPanel>
         
-        <DataGrid x:Name="dgViewClass"  Width="750" Height="100" Margin="5"></DataGrid>
+        
         <Label Name="lblView" Margin="100 5 100 5" HorizontalAlignment="Center">Cписок покупок</Label>
-        <DataGrid x:Name="dgViewProduct" Width="750" Height="200"></DataGrid>
+        <DataGrid x:Name="dgViewClass"  Width="1150" Height="300" Margin="5"></DataGrid>
+        <!--<DataGrid x:Name="dgViewProduct" Width="750" Height="200"></DataGrid>-->
     </StackPanel>
 </Window>

@@ -21,24 +21,41 @@ namespace BuyProduct
     /// </summary>
     public partial class frmViewData : Window
     {
+        
+
         public frmViewData()
         {
+        
             InitializeComponent();
             //начало просмотра данныъ
-            view1();
+            //view1();
             view2();
             ViewCatShop();
-            ViewCatName();
-            viewProductName();
+            ViewCatName("");
+            viewProductName("");
         }
 
-        private void ViewCatName()
+        private void ViewCatName(string si)
         {
+            string sqlQuery = "";
+
+            cmbViewCatName.ItemsSource=null;
+
+            if (si != "")
+            {
+                sqlQuery = "select DISTINCT ProductCategoriaName from ProductNames where CategoriaShopping='" + cmbViewCatShop.Text + "'  order by ProductCategoriaName";
+            }
+            else
+            {
+                sqlQuery = "select DISTINCT ProductCategoriaName from ProductNames order by ProductCategoriaName";
+            }
+
+
             using (var connection = new SQLiteConnection("Data Source = product.db"))
             {
                 connection.Open();
                 DataTable dTable = new DataTable();
-                string sqlQuery = "select DISTINCT ProductCategoriaName from ProductNames order by ProductCategoriaName";
+
 
                 if (connection.State != ConnectionState.Open)
                 {
@@ -54,7 +71,9 @@ namespace BuyProduct
                     //dgViewClass.ItemsSource = dTable.DefaultView;
                     //dgViewClass.ItemsSource = dTable.AsDataView();
                     cmbViewCatName.ItemsSource = dTable.DefaultView;
+                    cmbViewCatName.Items.Refresh();
                     cmbViewCatName.DisplayMemberPath = "ProductCategoriaName";
+
                 }
                 else
                 {
@@ -63,10 +82,14 @@ namespace BuyProduct
 
 
             }
+            
         }
 
         private void ViewCatShop()
         {
+            cmbViewCatShop.ItemsSource = null;
+            cmbViewCatShop.Items.Refresh();
+
             using (var connection = new SQLiteConnection("Data Source = product.db"))
             {
                 connection.Open();
@@ -89,6 +112,7 @@ namespace BuyProduct
                     //dgViewClass.ItemsSource = dTable.DefaultView;
                     //dgViewClass.ItemsSource = dTable.AsDataView();
                     cmbViewCatShop.ItemsSource = dTable.DefaultView;
+                    cmbViewCatShop.Items.Refresh();
                     cmbViewCatShop.DisplayMemberPath = "CategoriaShopping";
                 }
                 else
@@ -100,13 +124,25 @@ namespace BuyProduct
             }
         }
 
-        private void viewProductName()
+        private void viewProductName(string si)
         {
-            using (var connection = new SQLiteConnection("Data Source = product.db"))
+            string sqlQuery;
+            cmbViewProductName.ItemsSource = null;
+
+            if (si=="")
+            {
+                sqlQuery = "select DISTINCT productName from ProductNames order by productName";
+            }
+            else
+            {
+                sqlQuery = "select DISTINCT productName from ProductNames where ProductCategoriaName='"+ cmbViewCatName.Text + "'  order by productName";
+            }
+
+            using (SQLiteConnection connection = new SQLiteConnection("Data Source = product.db"))
             {
                 connection.Open();
                 DataTable dTable = new DataTable();
-                string sqlQuery = "select DISTINCT productName from ProductNames order by productName";
+                
 
                 if (connection.State != ConnectionState.Open)
                 {
@@ -122,6 +158,7 @@ namespace BuyProduct
                     //dgViewClass.ItemsSource = dTable.DefaultView;
                     //dgViewClass.ItemsSource = dTable.AsDataView();
                     cmbViewProductName.ItemsSource = dTable.DefaultView;
+                    cmbViewProductName.Items.Refresh();
                     cmbViewProductName.DisplayMemberPath = "productName";
                 }
                 else
@@ -137,7 +174,8 @@ namespace BuyProduct
 
         private void view1()
         {
-            using (var connection = new SQLiteConnection("Data Source = product.db"))
+           
+            using (SQLiteConnection connection = new SQLiteConnection("Data Source = product.db"))
             {
                 connection.Open();
                 DataTable dTable = new DataTable();
@@ -154,8 +192,8 @@ namespace BuyProduct
 
                 if (dTable.Rows.Count > 0)
                 {
-                    dgViewProduct.ItemsSource = dTable.DefaultView;
-                    //dgViewClass.ItemsSource = dTable.AsDataView();
+                    //dgViewProduct.ItemsSource = dTable.DefaultView;
+                    
                     
                 }
                 else
@@ -173,7 +211,7 @@ namespace BuyProduct
             {
                 connection.Open();
                 DataSet dSet = new DataSet();
-                string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productRashod from PriceShops order by productDateTime ASC";
+                string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by productDateTime ASC";
 
                 if (connection.State != ConnectionState.Open)
                 {
@@ -205,27 +243,155 @@ namespace BuyProduct
                 dgViewClass.ItemsSource = dv;
                 dgViewClass.Items.Refresh();
 
-                //dv.RowFilter = "productName='1 категория'";
-                //dgViewClass.ItemsSource = dv;
+                
+            }
+        }
+
+       
+
+        
+
+       
+
+        private void cmbViewCatShop_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (cmbViewCatShop.Text != "")
+            {
+                #region Заполняем таблицу при выборк группы продуктов 
+                using (var connection = new SQLiteConnection("Data Source = product.db"))
+                {
+                    connection.Open();
+                    DataSet dSet = new DataSet();
+                    string sqlQuery = "select productDateTime, ProductCategoriaName, CategoriaShopping, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by productDateTime ASC";
+
+                    if (connection.State != ConnectionState.Open)
+                    {
+                        System.Diagnostics.Debug.WriteLine("База не найдена!!");
+                        return;
+                    }
+
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
+                    adapter.Fill(dSet, "PriceShops");
+
+                    //dSet.Tables[0].DefaultView.RowFilter = "productName='1 категория'";
 
 
 
+                    //DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
+
+                    //DataView dv = new DataView(dSet.Tables["PriceShops"]);
+                    //dv.Sort = "productDateTime,ProductCategoriaName";
 
 
-                //if (dTable.Rows.Count > 0)
-                //{
-                //    dgViewProduct.ItemsSource = dTable.DefaultView;
-                //    //dgViewClass.ItemsSource = dTable.AsDataView();
+                    //dv.Sort = "productDateTime ASC";
+                    #region 3
+                    DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
+                    DataView dv = new DataView(dataTable);
 
-                //}
-                //else
-                //{
-                //    System.Diagnostics.Debug.WriteLine("В таблице нету данных для просмотра");
-                //}
+                    //ComboBoxItem cb1 = (ComboBoxItem)cmbViewCatShop.SelectedItem;
+                    //string Val = cb1.Content.ToString();
+
+                    string query = "CategoriaShopping='" + cmbViewCatShop.Text + "'";
+                    dv.RowFilter = query;
+
+                    #endregion
+
+                    dgViewClass.ItemsSource = dv;
+                    dgViewClass.Items.Refresh();
+
+
+                }
+                #endregion
+
+
+                #region Заполняем таблицу подгруппы продуктов
+                ViewCatName(cmbViewCatShop.Text);
+                #endregion
+
 
 
             }
         }
 
+        private void cmbViewCatName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (cmbViewCatName.Text != "")
+            {
+                #region Заполняем таблицу при выборк группы продуктов 
+                using (var connection = new SQLiteConnection("Data Source = product.db"))
+                {
+                    connection.Open();
+                    DataSet dSet = new DataSet();
+                    string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by productDateTime ASC";
+
+                    if (connection.State != ConnectionState.Open)
+                    {
+                        System.Diagnostics.Debug.WriteLine("База не найдена!!");
+                        return;
+                    }
+
+                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
+                    adapter.Fill(dSet, "PriceShops");
+
+                    #region 3
+                    DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
+                    DataView dv = new DataView(dataTable);
+
+                    string query = "ProductCategoriaName='" + cmbViewCatName.Text + "'";
+                    dv.RowFilter = query;
+
+                    #endregion
+
+                    dgViewClass.ItemsSource = dv;
+                    dgViewClass.Items.Refresh();
+
+
+                }
+                #endregion
+
+
+                #region Заполняем таблицу подгруппы продуктов
+                viewProductName(cmbViewCatName.Text);
+                #endregion
+
+
+
+            }
+        }
+
+        private void cmbViewProductName_LostFocus(object sender, RoutedEventArgs e)
+        {
+            #region Заполняем таблицу продуктов 
+            using (var connection = new SQLiteConnection("Data Source = product.db"))
+            {
+                connection.Open();
+                DataSet dSet = new DataSet();
+                string sqlQuery = "select productDateTime, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by productDateTime ASC";
+
+                if (connection.State != ConnectionState.Open)
+                {
+                    System.Diagnostics.Debug.WriteLine("База не найдена!!");
+                    return;
+                }
+
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(sqlQuery, connection);
+                adapter.Fill(dSet, "PriceShops");
+
+                #region 3
+                DataTable dataTable = dSet.Tables[0].DefaultView.ToTable();
+                DataView dv = new DataView(dataTable);
+
+                string query = "productName='" + cmbViewProductName.Text + "'";
+                dv.RowFilter = query;
+
+                #endregion
+
+                dgViewClass.ItemsSource = dv;
+                dgViewClass.Items.Refresh();
+
+
+            }
+            #endregion
+        }
     }
 }
