@@ -231,14 +231,23 @@ namespace BuyProduct
                     //dv.RowFilter = "productName='1 категория'";
                     dv.RowFilter = SortID;
                 }
+                #endregion
 
+                #region Таблица
+
+              
 
                 #endregion
+
+
 
                 dgViewClass.ItemsSource = dv;
                 dgViewClass.Items.Refresh();
 
-                
+                //dgViewClass.Columns[1].Header = "111";
+
+
+
             }
         }
 
@@ -288,5 +297,7 @@ namespace BuyProduct
         {
             view2("productName='" + cmbViewProductName.Text + "'");
         }
+
+       
     }
 }

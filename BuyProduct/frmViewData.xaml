@@ -18,7 +18,40 @@
         
         
         <Label Name="lblView" Margin="100 5 100 5" HorizontalAlignment="Center">Cписок покупок</Label>
-        <DataGrid x:Name="dgViewClass"  Width="1150" Height="300" Margin="5"></DataGrid>
+        <DataGrid x:Name="dgViewClass"  Width="1150" AutoGenerateColumns="False" Height="300" Margin="5" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата" Width="100" Binding="{ Binding date1, StringFormat=dd.MM.yyyy}"/>
+                <DataGridTextColumn Header="Класс" Width="100" Binding="{Binding CategoriaShopping}"/>
+                <DataGridTextColumn Header="Подкласс" Width="150" Binding="{Binding ProductCategoriaName}"/>
+
+                <DataGridTextColumn Header="Наименование" Width="390" Binding="{Binding productName}"/>
+                <DataGridTextColumn Header="Цена" Width="100" Binding="{Binding productPrice, StringFormat={}{0:0.00}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Кол-во" Width="50" Binding="{Binding productMassa, StringFormat={}{0:0.00}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Ед. измерения" Width="100" Binding="{Binding productUnit}"/>
+                <DataGridTextColumn Header="Итого за продукт" Width="*" Binding="{Binding productRashod, StringFormat={}{0:0.00}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+
+
+            </DataGrid.Columns>
+        </DataGrid>
         <!--<DataGrid x:Name="dgViewProduct" Width="750" Height="200"></DataGrid>-->
     </StackPanel>
 </Window>
