@@ -606,7 +606,7 @@ namespace BuyProduct
 
             string strproductName = cmbProductName.Text;
             string strProductCategoriaName = cmbCategoriaProduct.Text;
-            string strproductDateTime = dtShop.ToString("dd.MM.yyyy");
+            string strproductDateTime = dtShop.ToString("yyyy-MM-dd");
 
             //IFormatProvider formatZPT = new NumberFormatInfo { NumberDecimalSeparator = "." };
             ////string strproductPrice = txtProductPrice.Text.Replace(",", ".");
