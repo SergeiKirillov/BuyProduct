@@ -945,7 +945,7 @@ namespace BuyProduct
                 command.Parameters.Add(productName);
                 SQLiteParameter ProductCategoriaName = new SQLiteParameter("@strProductCategoriaName", cmbCategoriaProduct.Text);
                 command.Parameters.Add(ProductCategoriaName);
-                SQLiteParameter productDateTime = new SQLiteParameter("@strproductDateTime", dtShop.ToString("dd.MM.yyyy"));
+                SQLiteParameter productDateTime = new SQLiteParameter("@strproductDateTime", dtShop.ToString("yyyy-MM-dd"));
                 command.Parameters.Add(productDateTime);
                 SQLiteParameter ProductPrice = new SQLiteParameter("@strProductPrice", float.Parse(txtProductPrice.Text.Replace(",", "."), CultureInfo.InvariantCulture));
                 command.Parameters.Add(ProductPrice);
