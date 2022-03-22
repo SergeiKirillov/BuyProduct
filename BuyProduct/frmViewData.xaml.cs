@@ -135,7 +135,7 @@ namespace BuyProduct
             }
             else
             {
-                sqlQuery = "select DISTINCT productName from ProductNames where ProductCategoriaName='"+ cmbViewCatName.Text + "'  order by productName";
+                sqlQuery = "select DISTINCT productName from ProductNames " + si +"  order by productName";
             }
 
             using (SQLiteConnection connection = new SQLiteConnection("Data Source = product.db"))
@@ -277,11 +277,6 @@ namespace BuyProduct
         }
 
        
-
-        
-
-       
-
         private void cmbViewCatShop_LostFocus(object sender, RoutedEventArgs e)
         {
             if (cmbViewCatShop.Text != "")
@@ -305,12 +300,16 @@ namespace BuyProduct
             if (cmbViewCatName.Text != "")
             {
                 #region Заполняем таблицу при выборк группы продуктов 
-                view2("ProductCategoriaName='" + cmbViewCatName.Text + "'");
+                view2("ProductCategoriaName='" + cmbViewCatName.Text + "' AND CategoriaShopping='" + cmbViewCatShop.Text + "'");
                 #endregion
 
 
                 #region Заполняем таблицу подгруппы продуктов
-                viewProductName(cmbViewCatName.Text);
+                //var1
+                //viewProductName(cmbViewCatName.Text);
+                //var2
+                string query = "where CategoriaShopping='" + cmbViewCatShop.Text + "' AND ProductCategoriaName = '" + cmbViewCatName.Text + "'"; 
+                viewProductName(query);
                 #endregion
 
 
@@ -320,7 +319,7 @@ namespace BuyProduct
 
         private void cmbViewProductName_LostFocus(object sender, RoutedEventArgs e)
         {
-            view2("productName='" + cmbViewProductName.Text + "'");
+            view2("ProductCategoriaName='" + cmbViewCatName.Text + "' AND CategoriaShopping='" + cmbViewCatShop.Text + "' AND productName='" + cmbViewProductName.Text + "'");
         }
 
        
