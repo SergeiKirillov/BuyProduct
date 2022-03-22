@@ -8,8 +8,8 @@
         Title="Просмотр данных за выбранную дату с фильтрацией по классу(категории)" Height="450" Width="1300">
     <StackPanel Orientation="Vertical">
         <StackPanel Orientation="Horizontal" Height="25">
-            <DatePicker Width="150" Margin="10 0 5 0"  />
-            <DatePicker Width="150" Margin="10 0 5 0"  />
+            <DatePicker x:Name="dt1" Width="150" Margin="10 0 5 0"/>
+            <DatePicker x:Name="dt2" Width="150" Margin="10 0 5 0"/>
 
             <ComboBox x:Name="cmbViewCatShop" IsEditable="True" Width="150" Margin="10 0 5 0" LostFocus="cmbViewCatShop_LostFocus"/>
             <ComboBox x:Name="cmbViewCatName" IsEditable="True" Width="300" Margin="10 0 5 0" LostFocus="cmbViewCatName_LostFocus"/>

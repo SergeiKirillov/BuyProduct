@@ -213,7 +213,32 @@ namespace BuyProduct
                 DataSet dSet = new DataSet();
                 //select substr(productDateTime,7,4)|| "-" || substr(productDateTime, 4, 2) || "-" || substr(productDateTime, 1, 2) as date1, productName from PriceShops order by date1 DESC
                 //string sqlQuery = "select date(substr(productDateTime,7,4)||'-'||substr(productDateTime, 4, 2)||'-'||substr(productDateTime, 1, 2)) as date1, CategoriaShopping, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by date1 ASC";
-                string sqlQuery = "select date(productDateTime) as date1, CategoriaShopping, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by date1 ASC";
+
+                string sqlQuery = "";
+                
+
+                if ((dt1.Text=="")&&(dt2.Text == ""))
+                {
+                    sqlQuery = "select date(productDateTime) as date1, CategoriaShopping, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops order by date1 ASC";
+                }
+                else
+                {
+                    if ((dt2.Text=="")&&(dt1.Text!=""))
+                    {
+                        string strdt1 = Convert.ToDateTime(dt1.Text).ToString("yyyy-MM-dd");
+                        sqlQuery = "select date(productDateTime) as date1, CategoriaShopping, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops where date1='" + strdt1 + "' order by date1 ASC";
+                    }
+                    else if ((dt2.Text != "") && (dt1.Text != ""))
+                    {
+                        string strdt1 = Convert.ToDateTime(dt1.Text).ToString("yyyy-MM-dd");
+                        string strdt2 = Convert.ToDateTime(dt2.Text).ToString("yyyy-MM-dd");
+                        sqlQuery = "select date(productDateTime) as date1, CategoriaShopping, ProductCategoriaName, productName, productPrice, productMassa, productUnit, productRashod from PriceShops where date1 between '" + strdt1 + "' and '"+ strdt2 + "' order by date1 ASC";
+                    }
+                    
+                }
+                
+
+
                 if (connection.State != ConnectionState.Open)
                 {
                     System.Diagnostics.Debug.WriteLine("База не найдена!!");

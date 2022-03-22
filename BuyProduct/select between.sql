@@ -1,0 +1,1 @@
+select date(productDateTime) as dt1, strftime('%d.%m.%Y', date(productDateTime)) as ptime FROM PriceShops where dt1 between '2022-02-11' and '2022-02-15'
