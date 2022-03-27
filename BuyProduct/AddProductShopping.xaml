@@ -24,6 +24,8 @@
             <RowDefinition Height="0.5*"/>
             <RowDefinition Height="0.5*"/>
             <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
             <RowDefinition />
             
         </Grid.RowDefinitions>
@@ -66,8 +68,13 @@
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="10" Text="Итого (со скидкой)"/>
         <TextBox Name="txtItogoSkidka" IsEnabled="True" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="10" Text="Итого со скидкой(Заполняется автоматически)" IsTabStop="False"></TextBox>
 
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="11" Text="Километры проехал"/>
+        <TextBox Name="txtKmGo" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="11" Text="" Visibility="Hidden" KeyDown="txtKmGo_KeyDown" PreviewKeyDown="txt_PreviewKeyDown" />
 
-        <Button Grid.Column="2" Width="200" Height="50" Grid.Row="11" Name="btnSaveDB" Content="Add" Click="BtnSave2DB_Click" TabIndex="11"/>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0" Grid.Row="12" Text="Заметка"/>
+        <TextBox Name="txtZametka" Width="230" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Grid.Row="12" Text="" GotFocus="txtZametka_GotFocus"/>
+
+        <Button Grid.Column="2" Width="200" Height="50" Grid.Row="13" Name="btnSaveDB" Content="Add" Click="BtnSave2DB_Click" TabIndex="11"/>
 
 
     </Grid>

@@ -213,6 +213,11 @@ namespace BuyProduct
 
                 }
 
+                if (cmbCategoriaProduct.Text == "Бензин")
+                {
+                    txtKmGo.Visibility = Visibility.Visible;
+                }
+
 
             }
         }
@@ -518,7 +523,9 @@ namespace BuyProduct
                     txtProductMassa.TabIndex = 7;
                     cmbProdUnit.TabIndex = 8;
                     txtProductSkidka.TabIndex = 10;
-                    btnSaveDB.TabIndex = 11;
+                    txtKmGo.TabIndex = 11;
+                    txtZametka.TabIndex = 12;
+                    btnSaveDB.TabIndex = 13;
                     txtItogo.IsTabStop = true;
                     txtProductPrice.IsTabStop = false;
                     txtProductMassa.Focus();
@@ -530,8 +537,10 @@ namespace BuyProduct
                     txtProductMassa.TabIndex = 7;
                     cmbProdUnit.TabIndex = 8;
                     txtProductSkidka.TabIndex = 9;
-                    btnSaveDB.TabIndex = 10;
-                    txtItogo.TabIndex = 11;
+                    txtKmGo.TabIndex = 10;
+                    txtZametka.TabIndex = 11;
+                    btnSaveDB.TabIndex = 12;
+                    txtItogo.TabIndex = 15;
                     txtProductMassa.IsTabStop = true;
                     txtProductMassa.Focus();
                 }
@@ -710,6 +719,7 @@ namespace BuyProduct
                     txtItogo.IsEnabled = false;
                     txtItogoSkidka.IsTabStop = false;
                     txtItogoSkidka.IsEnabled = false;
+                    txtKmGo.Visibility = Visibility.Hidden;
 
                     System.Diagnostics.Debug.WriteLine($"Сброс-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
 
@@ -735,9 +745,10 @@ namespace BuyProduct
             if ((e.Key == Key.Enter) || (e.Key == Key.Tab))
             {
                 
-
                 //cmbCatShop.Focus();
                 MoveToNextElement(e);
+
+               
 
             }
 
@@ -793,17 +804,7 @@ namespace BuyProduct
 
             #region Меняем название полей
 
-            if (cmbCategoriaProduct.Text=="Бензин")
-            {
-
-               // txtBlCount.Text = "";
-               // txtBlPrice1.Text = "";
-            }
-            else
-            {
-               // txtBlCount.Text = "";
-               // txtBlPrice1.Text = "";
-            }
+            
 
 
             #endregion
@@ -937,8 +938,8 @@ namespace BuyProduct
                 string sqlExpression;
                 SQLiteCommand command;
 
-                sqlExpression = "INSERT INTO  PriceShops(productName,ProductCategoriaName,productDateTime,productPrice,productMassa,productRashod,ShopName,ProductDiscont,productUnit,CategoriaShopping,ItogoSkigka) " +
-                    "VALUES (@strproductName,@strProductCategoriaName,@strproductDateTime,@strProductPrice,@strproductMassa,@strproductRashod,@strShopName,@strProductDiscont,@strproductUnit,@strCategoriaShopping,@strItogoskidka)";
+                sqlExpression = "INSERT INTO  PriceShops(productName,ProductCategoriaName,productDateTime,productPrice,productMassa,productRashod,ShopName,ProductDiscont,productUnit,CategoriaShopping,ItogoSkigka,Zametka) " +
+                    "VALUES (@strproductName,@strProductCategoriaName,@strproductDateTime,@strProductPrice,@strproductMassa,@strproductRashod,@strShopName,@strProductDiscont,@strproductUnit,@strCategoriaShopping,@strItogoskidka,@strZametka)";
                 command = new SQLiteCommand(sqlExpression, connection);
 
                 SQLiteParameter productName = new SQLiteParameter("@strproductName", cmbProductName.Text);
@@ -963,8 +964,9 @@ namespace BuyProduct
                 command.Parameters.Add(CategoriaShopping);
                 SQLiteParameter Itogoskidka = new SQLiteParameter("@strItogoskidka", float.Parse(txtItogoSkidka.Text.Replace(",", "."), CultureInfo.InvariantCulture));
                 command.Parameters.Add(Itogoskidka);
+                SQLiteParameter strZametka = new SQLiteParameter("@strZametka", txtZametka.Text);
+                command.Parameters.Add(strZametka);
 
-                
 
                 int result = command.ExecuteNonQuery();
 
@@ -980,6 +982,9 @@ namespace BuyProduct
                     txtProductSkidka.Text = "";
                     cmbProdUnit.Text = "";
                     txtItogoSkidka.Text = "";
+                    txtKmGo.Text = "";
+                    txtZametka.Text = "";
+
 
                     dtShoping.TabIndex = 1;
                     cmbShopName.TabIndex = 2;
@@ -1000,6 +1005,7 @@ namespace BuyProduct
                     txtItogo.IsEnabled = false;
                     txtItogoSkidka.IsTabStop = false;
                     txtItogoSkidka.IsEnabled = false;
+                    txtKmGo.Visibility = Visibility.Hidden;
 
                     System.Diagnostics.Debug.WriteLine($"Сброс-> КатРасход,Цена1ед,Кол-во,ЕдИзм, ,Итого index={cmbCatShop.TabIndex},{txtProductPrice.TabIndex},{txtProductMassa.TabIndex},{cmbProdUnit.TabIndex}, ,{txtItogo.TabIndex}");
 
@@ -1043,5 +1049,24 @@ namespace BuyProduct
             }
         }
 
+        private void txtKmGo_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key.Equals(Key.OemComma))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtZametka_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtKmGo.Text!="")
+            {
+                float Litr = float.Parse(txtProductMassa.Text.Replace(",", "."), CultureInfo.InvariantCulture)*100;
+                float km = float.Parse(txtKmGo.Text.Replace(",", "."), CultureInfo.InvariantCulture); 
+                float Rashod = Litr / km ;
+                txtZametka.Text ="Проехал "+ txtKmGo.Text + " км при расходе=" + Rashod.ToString("0.00")+"л/100км ";
+
+            }
+        }
     }
 }

@@ -286,7 +286,7 @@ namespace BuyProduct
                 #endregion
 
 
-                #region Заполняем таблицу подгруппы продуктов
+                #region Заполняем combobox подгруппы продуктов
                 ViewCatName(cmbViewCatShop.Text);
                 #endregion
 
